@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MAFAR BARRM SGA BINHI BANNER PROGRAM - MANAGEMENT INFORMATION SYSTEM</title>
+        <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+        <script>
+        WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+            families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+            ],
+            urls: ["{% static 'assets/css/fonts.min.css' %}"],
+        },
+        active: function () {
+            sessionStorage.fonts = true;
+        },
+        });
+        </script>
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}">
+        <link href="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.css" rel="stylesheet">
+        <style>
+            .btn-primary {
+                background-color: #106F3B !important;
+                border-color: #106F3B !important;
+            }
+
+            .btn-primary:hover {
+                background-color: #0D522B !important;
+                border-color: #0D522B !important;
+                opacity: 0.8;
+            }
+
+            .badge-success {
+                background-color: #106F3B !important;
+                border-color: #106F3B !important;
+            }
+
+
+            .text-success { 
+                color: #106F3B !important;
+            }
+
+            .text-success:hover { 
+                color: #106F3B !important;
+                opacity: 0.8 !important;
+
+                cursor: pointer;
+            }
+
+            .alert-success {
+                border-color: #106F3B !important;
+            }
+
+            select option:checked {
+                background-color: #106F3B !important;
+                color: #fff !important;
+            }
+
+            select option:hover {
+                background-color: #106F3B !important;
+                opacity: 0.8 !important;
+                color: #fff !important;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            {% include './sidebar.html' %}
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <div class="logo-header" data-background-color="light">
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% include './navbar.html' %}
+                </div>
+                <div class="container">
+                    {% block content %}{% endblock %}
+                </div>
+                {% include './footer.html' %}
+            </div>
+            <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+            <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+            <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/chart.js/chart.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/datatables/datatables.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/jsvectormap/jsvectormap.min.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/jsvectormap/world.js' %}"></script>
+            <script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+            <script src="{% static 'assets/js/kaiadmin.min.js' %}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+            <script>
+            if ($("#datatable".length > 0)) {
+                $("#datatable").DataTable()
+            }
+
+
+            function onBack() {
+                window.history.back();
+            }
+
+            function onReload(){
+                window.location.reload();
+            }          
+            </script>
+            {% block specfic_js %}{% endblock %}
+        </body>
+    </html>

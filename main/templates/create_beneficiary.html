@@ -1,0 +1,117 @@
+{% extends './includes/base.html' %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">{{ name }}</h3>
+            <h6 class="op-7 mb-2">{{ subtitle }}</h6>
+        </div>
+    </div>
+    {% include './includes/message.html' %}
+    <div class="card p-3">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Personal Information Section</h4>
+                </div>
+                {% for input in form.personal_info %}
+                    {% if input.id_for_label == 'id_firstname' or input.id_for_label == 'id_middlename' or input.id_for_label == 'id_lastname' or input.id_for_label == 'id_extension' %}
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+
+                    {% elif input.id_for_label == 'id_gender' or input.id_for_label == 'id_purok' or input.id_for_label == 'id_municipality' %}
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+
+                    
+                    {% elif input.id_for_label == 'id_street' or input.id_for_label == 'id_province' or input.id_for_label == 'id_barangay' or input.id_for_label == 'id_region' %}
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+                    
+                    {% elif input.id_for_label == 'id_mobile_number' or input.id_for_label == 'id_landline_number' or input.id_for_label == 'id_dob' or input.id_for_label == 'id_pob' %}
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+
+                    {% elif input.id_for_label == 'id_provice_place_of_birth' or input.id_for_label == 'id_country' or input.id_for_label == 'id_education' %}
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+
+                    {% elif input.id_for_label == 'id_is_pwd' or input.id_for_label == 'id_is_fourps' or input.id_for_label == 'id_is_with_government_id' or input.id_for_label == 'id_is_member_in_any_cooperative' or input.id_for_label == 'id_is_member_in_ip' or input.id_for_label == 'id_is_household_head' %}
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                {{ input }}
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ input.label }}
+                                </label>
+                                <small class="text-muted d-block">{{ input.help_text }}</small>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                                {{ input }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <h4>Farm Profile Section</h4>
+
+                {% for input in form.farm_profile %}
+
+                    {% if input.id_for_label == 'id_is_active' or input.id_for_label == 'id_is_staff' or input.id_for_label == 'id_is_superuser'  %}
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            {{ input }}
+                            <label class="form-check-label" for="flexCheckDefault">
+                                {{ input.label }}
+                            </label>
+                            <small class="text-muted d-block">{{ input.help_text }}</small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                            {{ input }}
+                            <small class="text-muted">{{ input.help_text }}</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="{{ button }}" class="btn btn-primary mt-2">
+                <input type="button" onclick="onBack()" value="Back" class="btn btn-link mt-2">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

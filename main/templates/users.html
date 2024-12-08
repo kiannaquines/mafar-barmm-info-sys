@@ -1,0 +1,56 @@
+{% extends './includes/base.html' %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">Manage Users Information</h3>
+            <h6 class="op-7 mb-2">Manage users in the system</h6>
+        </div>
+        <div class="ms-md-auto py-2 py-md-0">
+            <a href="{% url 'add_user' %}" class="btn btn-primary btn-round">Create User</a>
+        </div>
+    </div>
+    {% include './includes/message.html' %}
+    <div class="card py-3">
+        <table class="table" id="datatable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Active</th>
+                    <th>Date Joined</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_active %}
+                        <span class="btn btn-primary btn-round btn-sm">Active</span>
+                        {% else %}
+                        <span class="btn btn-warning btn-round btn-sm">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.date_joined }}</td>
+                    <td>
+                        <div class="d-flex align-items-center justify-content-start gap-4">
+                            <a href="{% url 'update_user' pk=user.id %}">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{% url 'delete_user' pk=user.id %}">
+                                <i class="far fa-trash-alt text-danger"></i>
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

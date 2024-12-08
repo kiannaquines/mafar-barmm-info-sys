@@ -1,0 +1,185 @@
+from django.db import models
+
+
+class PersonalInformation(models.Model):
+    EXTENSIONS = (
+        ("Sr.", "Sr."),
+        ("Jr.", "Jr."),
+    )
+
+    GENDER = (("Male", "Male"), ("Female", "Female"))
+
+    HIGHEST_EDUCATION = (
+        ("Pre-school", "Pre-school"),
+        ("Elementary", "Elementary"),
+        ("High School", "High School"),
+        ("Junior High School", "Junior High School"),
+        ("Senior High School", "Senior High School"),
+        ("College", "College"),
+        ("Vocational", "Vocational"),
+        ("Post-graduate", "Post-graduate"),
+        ("None", "None"),
+    )
+
+    RELIGION = (
+        ("Christianity", "Christianity"),
+        ("Islam", "Islam"),
+        ("Others", "Others"),
+    )
+
+    CIVIL_STATUS = (
+        ("Single", "Single"),
+        ("Married", "Married"),
+        ("Widowed", "Widowed"),
+        ("Separated", "Separated"),
+    )
+
+    RELATIONSHIP = (
+        ("Mother", "Mother"),
+        ("Father", "Father"),
+    )
+
+    firstname = models.CharField(
+        max_length=255, help_text="Beneficiary first name", db_index=True
+    )
+    middlename = models.CharField(
+        max_length=255, help_text="Beneficiary middle name", db_index=True
+    )
+    lastname = models.CharField(
+        max_length=255, help_text="Beneficiary last name", db_index=True
+    )
+    extension = models.CharField(
+        max_length=255, help_text="Extension", choices=EXTENSIONS, db_index=True
+    )
+    gender = models.CharField(max_length=255, help_text="Gender", choices=GENDER)
+
+    purok = models.CharField(max_length=255, help_text="Purok")
+    municipality = models.CharField(max_length=255, help_text="Municipality")
+    street = models.CharField(max_length=255, help_text="Street")
+    province = models.CharField(max_length=255, help_text="Province")
+    barangay = models.CharField(max_length=255, help_text="Barangay")
+    region = models.CharField(max_length=255, help_text="Region")
+
+    mobile_number = models.CharField(max_length=11, help_text="Mobile Number")
+    landline_number = models.CharField(max_length=255, help_text="Landline Number")
+    dob = models.CharField(max_length=255, help_text="Date of Birth")
+    pob = models.CharField(max_length=255, help_text="Place of Birth")
+    provice_place_of_birth = models.CharField(
+        max_length=255, help_text="Provice Place Of Birth"
+    )
+    country = models.CharField(max_length=255)
+
+    education = models.CharField(
+        max_length=255, help_text="Highest Formal Education", choices=HIGHEST_EDUCATION
+    )
+    is_pwd = models.BooleanField(default=False, help_text="Person with disability")
+    is_fourps = models.BooleanField(default=False, help_text="4P's Beneficiary")
+    is_member_in_ip = models.BooleanField(
+        default=False, help_text="Member of an Indigenous Group"
+    )
+    is_household_head = models.BooleanField(default=True)
+    is_with_government_id = models.BooleanField(default=False, null=False, blank=False)
+    is_member_in_any_cooperative = models.BooleanField(default=False)
+
+    member_in_ip_specific = models.CharField(
+        max_length=255, help_text="Specific Indigenous Group",
+        null=True, blank=True
+    )
+
+    religion = models.CharField(max_length=255, choices=RELIGION)
+    civil_status = models.CharField(max_length=255, choices=CIVIL_STATUS)
+    name_of_spouse_if_married = models.CharField(max_length=255, null=True, blank=True)
+    mother_maiden_name = models.CharField(max_length=255)
+
+    name_of_household_head = models.CharField(max_length=255)
+    relationship = models.CharField(max_length=255, choices=RELATIONSHIP, null=True, blank=True)
+    number_of_living_household = models.IntegerField(default=0, null=True, blank=True)
+    number_of_male = models.IntegerField(default=0, null=True, blank=True)
+    number_of_female = models.IntegerField(default=0, null=True, blank=True)
+
+    type_of_id = models.CharField(max_length=255, null=True, blank=True)
+    id_number = models.CharField(max_length=255, null=True, blank=True)
+
+    specify_cooperative = models.CharField(max_length=255, null=True, blank=True)
+
+    person_to_notify = models.CharField(max_length=255)
+    contact_number = models.CharField(max_length=255)
+
+    def get_full_name(self):
+        return f"{self.firstname} {self.lastname}"
+
+    def __str__(self) -> str:
+        return self.get_full_name()
+
+    class Meta:
+        verbose_name = "Personal Information"
+        verbose_name_plural = "Personal Informations"
+
+
+class FarmProfile(models.Model):
+
+    MAIN_LIVELIHOOD = (
+        ("Farmer", "Farmer"),
+        ("Farm Worker", "Farm Worker"),
+        ("Agri Youth", "Agri Youth"),
+    )
+
+    FARMER = (
+        ("Rice", "Rice"),
+        ("Corn", "Corn"),
+        ("Other Crops", "Other Crops"),
+        ("Livestock", "Livestock"),
+        ("Poultry", "Poultry"),
+    )
+
+    FARM_WORKER = (
+        ("Land Preparation", "Land Preparation"),
+        ("Planting", "Planting"),
+        ("Cultivation", "Cultivation"),
+        ("Harvesting", "Harvesting"),
+        ("Others", "Others"),
+    )
+
+    AGRIYOUTH_WORKER = (
+        ("1", "Part of a farming household"),
+        ("2", "Attending/attended formal agri-fishery related course"),
+        ("3", "Attending/attended non-formal agri-fishery related course"),
+        ("4", "Participated in any agricultural activity/program."),
+        ("5", "Others"),
+    )
+
+    related_to = models.ForeignKey(PersonalInformation, on_delete=models.CASCADE)
+    main_livelihood = models.CharField(max_length=255, choices=MAIN_LIVELIHOOD)
+    activity_farmer = models.CharField(
+        max_length=50, choices=FARMER, null=True, blank=True
+    )
+    specific_farming_activity = models.CharField(max_length=50, null=True, blank=True)
+    activity_farmworker = models.CharField(
+        max_length=50, choices=FARM_WORKER, null=True, blank=True
+    )
+    specific_farmworker_activity = models.CharField(
+        max_length=50, null=True, blank=True
+    )
+    activity_agriyouth = models.CharField(
+        max_length=50, choices=AGRIYOUTH_WORKER, null=True, blank=True
+    )
+    specific_farmworker_activity = models.CharField(
+        max_length=50, null=True, blank=True
+    )
+
+    def __str__(self):
+        return self.related_to.get_full_name()
+
+    class Meta:
+        verbose_name = "Farm Profile"
+        verbose_name_plural = "Farm Profiles"
+
+
+class NotificationSent(models.Model):
+    sent_to = models.ForeignKey(PersonalInformation, on_delete=models.CASCADE)
+    message = models.TextField(max_length=255)
+    status = models.BooleanField(default=False)
+    date_sent = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.sent_to.get_full_name()} - {self.date_sent}"

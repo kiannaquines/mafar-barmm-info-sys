@@ -1,0 +1,34 @@
+{% extends './includes/base.html' %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">Manage Beneficiary</h3>
+            <h6 class="op-7 mb-2">Manage your system's beneficiary here</h6>
+        </div>
+    </div>
+    {% include './includes/message.html' %}
+    <div class="card py-3">
+        <table class="table" id="datatable">
+            <thead>
+                <tr>
+                    <th>Beneficiary</th>
+                    <th>Sex</th>
+                    <th>Municipality</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for beneficiary in beneficiaries %}
+                <tr>
+                    <td>{{ beneficiary.get_full_name }}</td>
+                    <td>{{ beneficiary.gender }}</td>
+                    <td>{{ beneficiary.municipality }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+{% endblock %}

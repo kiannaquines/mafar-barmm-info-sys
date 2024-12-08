@@ -1,0 +1,40 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">{{ name }}</h3>
+            <h6 class="op-7 mb-2">{{ subtitle }}</h6>
+        </div>
+    </div>
+    {% include './message.html' %}
+    <div class="card p-3">
+        <form method="post">
+            {% csrf_token %}
+            {% for input in form %}
+
+                {% if input.id_for_label == 'id_is_active' or input.id_for_label == 'id_is_staff' or input.id_for_label == 'id_is_superuser'  %}
+                <div class="form-check">
+                    {{ input }}
+                    <label class="form-check-label" for="flexCheckDefault">
+                        {{ input.label }}
+                    </label>
+                    <small class="text-muted d-block">{{ input.help_text }}</small>
+                  </div>
+                {% else %}
+                <div class="form-group">
+                    <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                    {{ input }}
+                    <small class="text-muted">{{ input.help_text }}</small>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <div class="form-group">
+                <input type="submit" value="{{ button }}" class="btn btn-primary mt-2">
+                <input type="button" onclick="onBack()" value="Back" class="btn btn-link mt-2">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Login & Register - Explore Kabacan</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="{%static 'assets/img/mafar-logo.png' %}" type="image/x-icon" />
+
+    <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+    <script>
+		WebFont.load({
+			google: {"families":["Public Sans:300,400,500,600,700"]},
+			custom: {"families":["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['assets/css/fonts.min.css']},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
+    <style>
+      body {
+        background-image: url('{% static 'assets/img/bg.jpg' %}') !important;
+        background-size: cover !important;
+        background-position: right !important;
+        background-repeat: no-repeat !important;
+      }
+      
+      .container-login {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        .container-login {
+          width: 50%;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body class="login">
+    <div class="wrapper wrapper-login">
+      {% block auth_content %}{% endblock %}
+    </div>
+    <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+    
+    <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/kaiadmin.min.js' %}"></script>
+    {% block specific_js %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,46 @@
+{% load static %}
+<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+    <div class="container-fluid">
+        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+            <li class="nav-item topbar-user dropdown hidden-caret">
+                <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                >
+                    <div class="avatar-sm">
+                        <img src="{% static 'assets/img/mafar-logo.png' %}" alt="{{ request.user.username }}" class="avatar-img rounded-circle">
+                    </div>
+                    <span class="profile-username">
+                        <span class="op-7">Hi,</span>
+                        <span class="fw-bold" style="text-transform: uppercase;">{{ request.user.username }}</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                        <li>
+                            <div class="user-box">
+                                <div class="avatar-lg">
+                                    <img src="{% static 'assets/img/mafar-logo.png' %}" alt="image profile" class="avatar-img rounded">
+                                </div>
+                                <div class="u-text">
+                                    <h4 style="text-transform: uppercase;">{{ request.user.username }}</h4>
+                                    <p class="text-muted">{{ request.user.email }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% if request.user.is_active and request.user.is_superuser %}
+                        <li>
+                            <a class="dropdown-item" href="/admin">Super Administrator</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </li>
+                    </div>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
