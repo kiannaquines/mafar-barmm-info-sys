@@ -16,14 +16,31 @@
                     <th>Beneficiary</th>
                     <th>Sex</th>
                     <th>Municipality</th>
+                    <th>Livelihood</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for beneficiary in beneficiaries %}
                 <tr>
-                    <td>{{ beneficiary.get_full_name }}</td>
-                    <td>{{ beneficiary.gender }}</td>
-                    <td>{{ beneficiary.municipality }}</td>
+                    <td>{{ beneficiary.related_to.get_full_name }}</td>
+                    <td>{{ beneficiary.related_to.gender }}</td>
+                    <td>{{ beneficiary.related_to.municipality }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
+                    </td>
+                    <td>{{ beneficiary.related_to.date_added }}</td>
+                    <td>
+                        <div class="d-flex align-items-center justify-content-start gap-4">
+                            <a href="#">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="#">
+                                <i class="far fa-trash-alt text-danger"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

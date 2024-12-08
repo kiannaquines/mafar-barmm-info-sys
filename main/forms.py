@@ -12,29 +12,41 @@ class LoginForm(forms.Form):
 class PersonalInformationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PersonalInformationForm, self).__init__(*args, **kwargs)
+        
+        label_mapping = {
+            'dob': 'Date of birth',
+            'pob': 'Place of birth',
+            'name_of_household_head': 'Name of your household head',
+            'is_pwd': 'Are you a person with disability?',
+            'is_fourps': 'Are you a member in 4ps?',
+            'is_member_in_ip': 'Are you a member in Indigenous Group?',
+            'is_household_head': 'Are you a household head?',
+            'is_with_government_id': 'Do you have a government ID?',
+            'is_member_in_any_cooperative': 'Are you a member in any cooperative?',
+            'person_to_notify': 'Person you want to notify?',
+            'contact_number': 'Contact number of person you want to notify?',
+            'member_in_ip_specific': 'Specify what Indigenous Group are you'
+        }
+
         for field_name, field in self.fields.items():
-            if 'dob' in field_name:
-                field.label = 'Date of birth'
+            if field_name in label_mapping:
+                field.label = label_mapping[field_name]
             
-            if 'pob' in field_name:
-                field.label = 'Place of birth'
-
-
             if isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
-            
+
             field.widget.attrs['placeholder'] = field.label
 
     class Meta:
         model = PersonalInformation
+        fields = '__all__'
         widgets = {
             'dob': forms.DateInput(
                 attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Date of Birth'}
             )
         }
-        fields = '__all__'
 
 class FarmProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -55,15 +67,6 @@ class FarmProfileForm(forms.ModelForm):
 class BeneficiaryForm(forms.Form):
     personal_info = PersonalInformationForm()
     farm_profile = FarmProfileForm()
-
-    def save(self):
-        personal_info_instance = self.cleaned_data['personal_info']
-        personal_info_instance.save()
-        farm_profile_instance = self.cleaned_data['farm_profile']
-        farm_profile_instance.related_to = personal_info_instance
-        farm_profile_instance.save()
-        
-        return personal_info_instance, farm_profile_instance
 
 class AdminUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):

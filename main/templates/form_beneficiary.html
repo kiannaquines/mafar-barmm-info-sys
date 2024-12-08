@@ -69,10 +69,11 @@
                             </div>
                         </div>
                     {% else %}
-                        <div class="col-3">
+                        <div class="col-4">
                             <div class="form-group">
                                 <label for="{{ input.id_for_label }}">{{ input.label }}</label>
                                 {{ input }}
+                                <small class="text-muted d-block">{{ input.help_text }}</small>
                             </div>
                         </div>
                     {% endif %}
@@ -84,26 +85,13 @@
                 <h4>Farm Profile Section</h4>
 
                 {% for input in form.farm_profile %}
-
-                    {% if input.id_for_label == 'id_is_active' or input.id_for_label == 'id_is_staff' or input.id_for_label == 'id_is_superuser'  %}
-                    <div class="col-md-4">
-                        <div class="form-check">
-                            {{ input }}
-                            <label class="form-check-label" for="flexCheckDefault">
-                                {{ input.label }}
-                            </label>
-                            <small class="text-muted d-block">{{ input.help_text }}</small>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="{{ input.id_for_label }}">{{ input.label }}</label>
                             {{ input }}
                             <small class="text-muted">{{ input.help_text }}</small>
                         </div>
                     </div>
-                    {% endif %}
                 {% endfor %}
             </div>
 

@@ -1,5 +1,5 @@
 from main.forms import *
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import View, UpdateView, DeleteView, CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -50,18 +50,48 @@ class BeneficiaryView(MustBeLoggedIn, ListView):
 
 
 class AddBeneficiaryView(View):
-    template_name = 'create_beneficiary.html'
-    context = {}
+    template_name = 'form_beneficiary.html'
+
+    def get_context_data(self, form=None):
+        return {
+            'name': 'Create Beneficiary',
+            'subtitle': 'Create new beneficiary here',
+            'button': 'Create Beneficiary',
+            'form': form or BeneficiaryForm(),
+        }
 
     def get(self, request):
-        self.context['name'] = 'Create Beneficiary'
-        self.context['subtitle'] = 'Create new beneficiciary here'
-        self.context['button'] = 'Create Beneficiary'
-        self.context['form'] = BeneficiaryForm()
-        return render(request, self.template_name, context=self.context)
-    
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
     def post(self, request):
-        pass
+        personal_info_form = PersonalInformationForm(request.POST)
+        farm_profile_form = FarmProfileForm(request.POST)
+
+        if personal_info_form.is_valid() and farm_profile_form.is_valid():
+            personal_info = personal_info_form.save()
+
+            farm_profile = farm_profile_form.save(commit=False)
+            farm_profile.related_to = personal_info
+            farm_profile.save()
+
+            request_message(request=request, message='You have successfully created a new beneficiary', tag='primary')
+            return redirect('beneficiary')
+        
+        else:
+
+            for field, errors in personal_info_form.errors.items():
+                for error in errors:
+                    request_message(request=request, message=error, tag="danger")
+
+            for field, errors in farm_profile_form.errors.items():
+                for error in errors:
+                    request_message(request=request, message=error, tag="danger")
+            
+            return render(request, self.template_name, {
+                'personal_info_form': personal_info_form,
+                'farm_profile_form': farm_profile_form
+            })
 
 
 
