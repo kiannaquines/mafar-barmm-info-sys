@@ -18,88 +18,353 @@
                 </div>
                 {% for input in form.personal_info %}
                     {% if input.id_for_label == 'id_firstname' or input.id_for_label == 'id_middlename' or input.id_for_label == 'id_lastname' or input.id_for_label == 'id_extension' %}
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                            </div>
-                        </div>
-
-                    {% elif input.id_for_label == 'id_gender' or input.id_for_label == 'id_purok' or input.id_for_label == 'id_municipality' %}
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                            </div>
-                        </div>
-
-                    
-                    {% elif input.id_for_label == 'id_street' or input.id_for_label == 'id_province' or input.id_for_label == 'id_barangay' or input.id_for_label == 'id_region' %}
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                            </div>
-                        </div>
-                    
-                    {% elif input.id_for_label == 'id_mobile_number' or input.id_for_label == 'id_landline_number' or input.id_for_label == 'id_dob' or input.id_for_label == 'id_pob' %}
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                            </div>
-                        </div>
-
-                    {% elif input.id_for_label == 'id_provice_place_of_birth' or input.id_for_label == 'id_country' or input.id_for_label == 'id_education' %}
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                            </div>
-                        </div>
-
-                    {% elif input.id_for_label == 'id_is_pwd' or input.id_for_label == 'id_is_fourps' or input.id_for_label == 'id_is_with_government_id' or input.id_for_label == 'id_is_member_in_any_cooperative' or input.id_for_label == 'id_is_member_in_ip' or input.id_for_label == 'id_is_household_head' %}
-                        <div class="col-md-12">
-                            <div class="form-check">
-                                {{ input }}
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{ input.label }}
-                                </label>
-                                <small class="text-muted d-block">{{ input.help_text }}</small>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                                {{ input }}
-                                <small class="text-muted d-block">{{ input.help_text }}</small>
-                            </div>
-                        </div>
-                    {% endif %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }} 
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+                {% elif input.id_for_label == 'id_gender' or input.id_for_label == 'id_purok' or input.id_for_label == 'id_municipality' %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+                {% elif input.id_for_label == 'id_street' or input.id_for_label == 'id_province' or input.id_for_label == 'id_barangay' or input.id_for_label == 'id_region' %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+                {% elif input.id_for_label == 'id_mobile_number' or input.id_for_label == 'id_landline_number' or input.id_for_label == 'id_dob' or input.id_for_label == 'id_pob' %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+                {% elif input.id_for_label == 'id_provice_place_of_birth' or input.id_for_label == 'id_country' or input.id_for_label == 'id_education' %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+                {% elif input.id_for_label == 'id_is_pwd' or input.id_for_label == 'id_is_fourps' or input.id_for_label == 'id_is_with_government_id' or input.id_for_label == 'id_is_member_in_any_cooperative' or input.id_for_label == 'id_is_member_in_ip' or input.id_for_label == 'id_is_household_head' %}
+                <div class="col-md-4">
+                    <div class="form-check">
+                        {{ input }}
+                        <label class="form-check-label" for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        <small class="text-muted d-block">{{ input.help_text }}</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                            {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                        <small class="text-muted d-block">{{ input.help_text }}</small>
+                    </div>
+                </div>
+                {% endif %}
 
                 {% endfor %}
             </div>
-
             <div class="row">
                 <h4>Farm Profile Section</h4>
-
-                {% for input in form.farm_profile %}
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                            {{ input }}
-                            <small class="text-muted">{{ input.help_text }}</small>
-                        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.main_livelihood.id_for_label }}">
+                            {{ form.farm_profile.main_livelihood.label }}
+                            {% if form.farm_profile.main_livelihood.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.main_livelihood }}
+                        <small class="text-muted">{{ form.farm_profile.main_livelihood.help_text }}</small>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+                <div class="col-md-4 activity_farmer" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.activity_farmer.id_for_label }}">
+                            {{ form.farm_profile.activity_farmer.label }}
 
+                            {% if form.farm_profile.activity_farmer.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.activity_farmer }}
+                        <small class="text-muted">{{ form.farm_profile.activity_farmer.help_text }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4 specific_farming_activity" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.specific_farming_activity.id_for_label }}">
+                            {{ form.farm_profile.specific_farming_activity.label }}
+
+                            {% if form.farm_profile.specific_farming_activity.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.specific_farming_activity }}
+                        <small class="text-muted">{{ form.farm_profile.specific_farming_activity.label }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4 activity_farmworker" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.activity_farmworker.id_for_label }}">
+                            {{ form.farm_profile.activity_farmworker.label }}
+
+                            {% if form.farm_profile.activity_farmworker.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.activity_farmworker }}
+                        <small class="text-muted">{{ form.farm_profile.activity_farmworker.help_text }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4 specific_farmworker_activity" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.specific_farmworker_activity.id_for_label }}">
+                            {{ form.farm_profile.specific_farmworker_activity.label }}
+
+                            {% if form.farm_profile.specific_farmworker_activity.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.specific_farmworker_activity }}
+                        <small class="text-muted">{{ form.farm_profile.specific_farmworker_activity.help_text }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4 activity_agriyouth" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.activity_agriyouth.id_for_label }}">
+                            {{ form.farm_profile.activity_agriyouth.label }}
+
+                            {% if form.farm_profile.activity_agriyouth.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.activity_agriyouth }}
+                        <small class="text-muted">{{ form.farm_profile.activity_agriyouth.help_text }}</small>
+                    </div>
+                </div>
+                <div class="col-md-4 specific_agriyouth_activity" style="display: none;">
+                    <div class="form-group">
+                        <label for="{{ form.farm_profile.specific_agriyouth_activity.id_for_label }}">
+                            {{ form.farm_profile.specific_agriyouth_activity.label }}
+
+                            {% if form.farm_profile.specific_agriyouth_activity.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.farm_profile.specific_agriyouth_activity }}
+                        <small class="text-muted">{{ form.farm_profile.specific_agriyouth_activity.help_text }}</small>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="{{ button }}" class="btn btn-primary mt-2">
-                <input type="button" onclick="onBack()" value="Back" class="btn btn-link mt-2">
+                <input
+                    type="reset"
+                    onclick="return confirm('Are you sure you want to reset the fields?');"
+                    value="Reset"
+                    class="btn btn-warning mt-2"
+                >
+                <input
+                    type="button"
+                    onclick="onBack()"
+                    value="Back"
+                    class="btn btn-link mt-2"
+                >
             </div>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block specfic_js %}
+<script>
+
+    function enableInput() {
+        const idIsMemberInIp = document.querySelector("#id_is_member_in_ip").value;
+        const idMemberInIpSpecific = document.querySelector("#id_member_in_ip_specific");
+        const withGovernmentID = document.querySelector("#id_is_with_government_id")
+
+
+        const is_member_in_any_cooperative = document.querySelector("#id_is_member_in_any_cooperative").value
+        const specify_cooperative = document.querySelector("#id_specify_cooperative")
+
+        if (!is_member_in_any_cooperative.checked) {
+            specify_cooperative.setAttribute("readonly", true)
+        }
+
+    
+        if (!withGovernmentID.checked) {
+
+            const id_type_of_id = document.getElementById("id_type_of_id");
+            const id_id_number = document.getElementById("id_id_number");
+
+            id_type_of_id.setAttribute("readonly",true);
+            id_id_number.setAttribute("readonly",true);
+        }
+
+        if (idIsMemberInIp !== 'off') {
+            idMemberInIpSpecific.setAttribute("readonly", true);
+        }
+        
+        const is_household_head = document.getElementById("id_is_household_head");
+        const id_name_of_household_head = document.getElementById("id_name_of_household_head");
+
+        if (is_household_head) {
+            id_name_of_household_head.setAttribute("readonly", true);
+        } else {
+            id_name_of_household_head.removeAttribute("readonly");
+        }
+    }
+
+    window.onload = enableInput
+
+    document.querySelector("#id_is_member_in_ip").addEventListener("change", function(e){
+        const idMemberInIpSpecific = document.getElementById("id_member_in_ip_specific");
+
+        if (e.target.checked) {
+            idMemberInIpSpecific.removeAttribute("readonly");
+        } else {
+            idMemberInIpSpecific.setAttribute("readonly", true);
+        }
+    });
+
+    document.querySelector("#id_is_member_in_any_cooperative").addEventListener("change", function(e){
+        const id_specify_cooperative = document.getElementById("id_specify_cooperative");
+
+        if (e.target.checked) {
+            id_specify_cooperative.removeAttribute("readonly");
+        } else {
+            id_specify_cooperative.setAttribute("readonly",true);
+        }
+    });
+
+
+    document.querySelector("#id_is_household_head").addEventListener("change", function(e){
+        const id_name_of_household_head = document.getElementById("id_name_of_household_head");
+    
+        if (e.target.checked === true) {
+            id_name_of_household_head.removeAttribute("readonly");
+        } else {
+            id_name_of_household_head.setAttribute("readonly", true);
+        }
+
+    });
+
+    document.querySelector("#id_is_with_government_id").addEventListener("change", function(e){
+        const id_type_of_id = document.getElementById("id_type_of_id");
+        const id_id_number = document.getElementById("id_id_number");
+
+        if (e.target.checked) {
+            id_type_of_id.removeAttribute("readonly");
+            id_id_number.removeAttribute("readonly");
+        } else {
+            id_type_of_id.setAttribute("readonly",true);
+            id_id_number.setAttribute("readonly",true);
+        }
+    });
+
+    document.querySelectorAll('select option').forEach(option => {
+        if (option.value === '') {
+            option.textContent = "Select Option";
+        }
+    });
+
+    document.getElementById("id_main_livelihood").addEventListener("change", function (e) {
+        const elements = {
+            'Farmer': ['.activity_farmer'],
+            'Farm Worker': ['.activity_farmworker'],
+            'Agri Youth': ['.activity_agriyouth'],
+        };
+
+        const selectedKey = e.target.value;
+
+        [
+            '.activity_farmer',
+            '.activity_farmworker',
+            '.activity_agriyouth',
+            '.specific_agriyouth_activity',
+            '.specific_farmworker_activity',
+            '.specific_farming_activity',
+        ].forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.style.display = 'none';
+            }
+        });
+
+        if (elements[selectedKey]) {
+            elements[selectedKey].forEach(selector => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.style.display = 'block';
+                }
+            });
+        }
+    });
+
+    document.getElementById("id_activity_farmer").addEventListener("change", function (e) {
+        const specificActivity = document.querySelector(".specific_farming_activity");
+        if (specificActivity) {
+            specificActivity.style.display = (e.target.value === "Rice" || e.target.value === "Corn") ? "none" : "block";
+        }
+    });
+
+    document.getElementById("id_activity_farmworker").addEventListener("change", function (e) {
+        const specificActivity = document.querySelector(".specific_farmworker_activity");
+        if (specificActivity) {
+            specificActivity.style.display = (e.target.value === "Others") ? "block" : "none";
+        }
+    });
+
+    document.getElementById("id_activity_agriyouth").addEventListener("change", function (e) {
+        const specificActivity = document.querySelector(".specific_agriyouth_activity");
+        if (specificActivity) {
+            specificActivity.style.display = (e.target.value === "5") ? "block" : "none";
+        }
+    });
+</script>
 {% endblock %}

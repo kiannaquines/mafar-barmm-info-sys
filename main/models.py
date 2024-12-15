@@ -1,8 +1,31 @@
+from datetime import datetime
 from django.db import models
 
 
+class Barangay(models.Model):
+    barangay = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Barangay"
+        verbose_name = "Barangay"
+
+
+    def __str__(self) -> str:
+        return self.barangay
+    
+class Municpality(models.Model):
+    municipality = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Municipality"
+        verbose_name = "Municipality"
+    
+    def __str__(self) -> str:
+        return self.municipality
+    
 class PersonalInformation(models.Model):
     EXTENSIONS = (
+        ("None", "None"),
         ("Sr.", "Sr."),
         ("Jr.", "Jr."),
     )
@@ -55,14 +78,14 @@ class PersonalInformation(models.Model):
     gender = models.CharField(max_length=255, help_text="Gender", choices=GENDER)
 
     purok = models.CharField(max_length=255, help_text="Purok")
-    municipality = models.CharField(max_length=255, help_text="Municipality")
+    municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE, help_text="Municipality")
+    barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE, help_text="Barangay")
     street = models.CharField(max_length=255, help_text="Street")
     province = models.CharField(max_length=255, help_text="Province")
-    barangay = models.CharField(max_length=255, help_text="Barangay")
     region = models.CharField(max_length=255, help_text="Region")
 
     mobile_number = models.CharField(max_length=11, help_text="Mobile Number")
-    landline_number = models.CharField(max_length=255, help_text="Landline Number")
+    landline_number = models.CharField(max_length=255, help_text="Landline Number", blank=True, null=True)
     dob = models.CharField(max_length=255, help_text="Date of Birth")
     pob = models.CharField(max_length=255, help_text="Place of Birth")
     provice_place_of_birth = models.CharField(
@@ -92,7 +115,7 @@ class PersonalInformation(models.Model):
     name_of_spouse_if_married = models.CharField(max_length=255, null=True, blank=True, help_text="Name of spouse if married")
     mother_maiden_name = models.CharField(max_length=255, help_text="Mother maiden name")
 
-    name_of_household_head = models.CharField(max_length=255, help_text="Name of Household")
+    name_of_household_head = models.CharField(max_length=255, help_text="Name of Household", blank=True, null=True)
     relationship = models.CharField(max_length=255, choices=RELATIONSHIP, null=True, blank=True, help_text="Relationship")
     number_of_living_household = models.IntegerField(default=0, null=True, blank=True, help_text="No. of living in your household")
     number_of_male = models.IntegerField(default=0, null=True, blank=True, help_text="No. of male in your household")
@@ -165,9 +188,11 @@ class FarmProfile(models.Model):
     activity_agriyouth = models.CharField(
         max_length=50, choices=AGRIYOUTH_WORKER, null=True, blank=True
     )
-    specific_farmworker_activity = models.CharField(
+    specific_agriyouth_activity = models.CharField(
         max_length=50, null=True, blank=True
     )
+
+    status = models.CharField(max_length=100, default='Pending', null=True, blank=True, choices=(('Pending','Pending'),('Approved','Approved')))
     date_added = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.related_to.get_full_name()
@@ -185,3 +210,12 @@ class NotificationSent(models.Model):
 
     def __str__(self) -> str:
         return f"{self.sent_to.get_full_name()} - {self.date_sent}"
+    
+
+class Notification(models.Model):
+    message = models.TextField(max_length=255)
+    for_municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Message created last {self.date_added}"

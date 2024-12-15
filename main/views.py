@@ -1,12 +1,42 @@
+from django.http import JsonResponse
 from main.forms import *
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View, UpdateView, DeleteView, CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from main.utils import request_message
 from main.mixins import MustBeLoggedIn, AlreadyLoggedInMixin
-
+from main.service import *
+from core.settings import SERVER_SMS_MESSAGE_TEMPLATE
 User = get_user_model()
+
+def logout_view(request):
+    logout(request)
+    request_message(request=request, message="You have successfully logged out. Thank you!", tag="primary")
+    return redirect('login')
+
+class NotificationView(MustBeLoggedIn, View):
+    template_name = 'notification.html'
+    context = {}
+
+    def get(self, request):
+        return render(request, self.template_name, self.context)
+
+
+class ApproveAndNotifyView(View):
+    def post(self, request):
+        beneficiary_id = request.POST.get('id')
+
+        beneficiary = get_object_or_404(FarmProfile, id=beneficiary_id)
+        beneficiary.status = "Approved"
+        beneficiary.save()
+
+        message = SERVER_SMS_MESSAGE_TEMPLATE.format(client_fullname=beneficiary.related_to.get_full_name())
+        mobile = beneficiary.related_to.mobile_number
+
+        sms_notification = send_sms_api_interface(message, mobile)
+        return JsonResponse(sms_notification)
+
 
 class LoginView(AlreadyLoggedInMixin, FormView):
     template_name = 'login.html'
@@ -34,7 +64,6 @@ class LoginView(AlreadyLoggedInMixin, FormView):
 
         return super().form_invalid(form)
     
-
 class DashboardView(MustBeLoggedIn, View):
     template_name = 'dashboard.html'
     context = {}
@@ -47,7 +76,6 @@ class BeneficiaryView(MustBeLoggedIn, ListView):
     model = FarmProfile
     context_object_name = 'beneficiaries'
     queryset = FarmProfile.objects.all()
-
 
 class AddBeneficiaryView(View):
     template_name = 'form_beneficiary.html'
@@ -82,18 +110,66 @@ class AddBeneficiaryView(View):
 
             for field, errors in personal_info_form.errors.items():
                 for error in errors:
-                    request_message(request=request, message=error, tag="danger")
+                    request_message(request=request, message=f'{field} {error}', tag="danger")
 
             for field, errors in farm_profile_form.errors.items():
                 for error in errors:
-                    request_message(request=request, message=error, tag="danger")
+                    request_message(request=request, message=f'{field} {error}', tag="danger")
             
             return render(request, self.template_name, {
-                'personal_info_form': personal_info_form,
-                'farm_profile_form': farm_profile_form
+                'name': 'Create Beneficiary',
+                'subtitle': 'Create new beneficiary here',
+                'button': 'Create Beneficiary',
+                'form': BeneficiaryForm(),
             })
 
+class UpdatePersonalInfoView(UpdateView):
+    pk_url_kwarg = 'pk'
+    model = PersonalInformation
+    form_class = PersonalInformationForm
+    template_name = 'includes/form.html'
+    success_url = reverse_lazy('beneficiary')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = 'Update Information'
+        context['subtitle'] = 'Update Personal Information'
+        context['button'] = 'Update Information'
+
+        return context
+    def form_valid(self, form):
+        request_message(request=self.request, message='You have successfully updated personal information', tag='primary')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+        return super().form_invalid(form)
+    
+class UpdateFarmInfoView(UpdateView):
+    pk_url_kwarg = 'pk'
+    model = FarmProfile
+    form_class = FarmProfileForm
+    template_name = 'includes/form.html'
+    success_url = reverse_lazy('beneficiary')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = 'Update Farm Information'
+        context['subtitle'] = 'Update Farm Information'
+        context['button'] = 'Update Information'
+
+        return context
+    def form_valid(self, form):
+        request_message(request=self.request, message='You have successfully updated farm information', tag='primary')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+        return super().form_invalid(form)
 
 class UsersView(MustBeLoggedIn, ListView):
     template_name = 'users.html'
@@ -168,3 +244,24 @@ class DeleteUserView(MustBeLoggedIn, DeleteView):
             for error in errors:
                 request_message(request=self.request, message=error, tag="danger")
 
+class DeleteBeneficaryView(MustBeLoggedIn, DeleteView):
+    pk_url_kwarg = 'pk'
+    model = PersonalInformation
+    template_name = 'includes/delete.html'
+    success_url = reverse_lazy('beneficiary')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = 'Delete Beneficiary'
+        context['subtitle'] = 'Delete beneficiary details here'
+        context['button'] = 'Delete Beneficiary'
+        return context
+    
+    def form_valid(self, form):
+        request_message(request=self.request, message='You have successfully deleted beneficiary information', tag='primary')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")

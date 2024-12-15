@@ -3,6 +3,7 @@ from main.views import *
 
 urlpatterns = [
     path('', LoginView.as_view(), name="login"),
+    path('mafar/logout', logout_view, name="logout_user"),
     path('mafar/dashboard/', DashboardView.as_view(), name="dashboard"),
     path('mafar/users/', UsersView.as_view(), name="users"),
     path('mafar/users/add', AddUserView.as_view(), name="add_user"),
@@ -13,4 +14,18 @@ urlpatterns = [
     # Beneficiary
     path('mafar/beneficiary/', BeneficiaryView.as_view(), name="beneficiary"),
     path('mafar/beneficiary/add', AddBeneficiaryView.as_view(), name="add_beneficiary"),
+    path('mafar/beneficiary/personal/edit/<int:pk>', UpdatePersonalInfoView.as_view(), name="update_beneficiary_personal_info"),
+    path('mafar/beneficiary/farm/edit/<int:pk>', UpdateFarmInfoView.as_view(), name="update_beneficiary_farm_info"),
+    path('mafar/beneficiary/delete/<int:pk>', DeleteBeneficaryView.as_view(), name="remove_beneficiary_farm_info"),
+
+    # Notification SMS
+
+    # Export PDF
+
+    # Notification
+    path('mafar/notification', NotificationView.as_view(), name="notification"),
+
+    # Approve and Notify
+    path('mafar/approve_and_notify', ApproveAndNotifyView.as_view(), name="approve_and_notify"),
+
 ]

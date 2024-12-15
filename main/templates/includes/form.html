@@ -15,26 +15,104 @@
             {% for input in form %}
 
                 {% if input.id_for_label == 'id_is_active' or input.id_for_label == 'id_is_staff' or input.id_for_label == 'id_is_superuser'  %}
-                <div class="form-check">
-                    {{ input }}
-                    <label class="form-check-label" for="flexCheckDefault">
-                        {{ input.label }}
-                    </label>
-                    <small class="text-muted d-block">{{ input.help_text }}</small>
-                  </div>
-                {% else %}
-                <div class="form-group">
-                    <label for="{{ input.id_for_label }}">{{ input.label }}</label>
-                    {{ input }}
-                    <small class="text-muted">{{ input.help_text }}</small>
+            <div class="form-check">
+                {{ input }}
+                <label class="form-check-label" for="flexCheckDefault">
+                    {{ input.label }}
+                </label>
+                <small class="text-muted d-block">{{ input.help_text }}</small>
+            </div>
+            {% elif input.id_for_label == 'id_is_pwd' or input.id_for_label == 'id_is_fourps' or input.id_for_label == 'id_is_with_government_id' or input.id_for_label == 'id_is_member_in_any_cooperative' or input.id_for_label == 'id_is_member_in_ip' or input.id_for_label == 'id_is_household_head' %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        {{ input }}
+                        <label class="form-check-label" for="{{ input.id_for_label }}">
+                            {{ input.label }}
+                                {% if input.field.required %}
+                            <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        <small class="text-muted d-block">{{ input.help_text }}</small>
+                    </div>
                 </div>
-                {% endif %}
+            </div>
+            {% else %}
+            <div class="form-group {{ input.id_for_label }}">
+                <label for="{{ input.id_for_label }}">{{ input.label }}</label>
+                {{ input }}
+                <small class="text-muted">{{ input.help_text }}</small>
+            </div>
+            {% endif %}
             {% endfor %}
             <div class="form-group">
                 <input type="submit" value="{{ button }}" class="btn btn-primary mt-2">
-                <input type="button" onclick="onBack()" value="Back" class="btn btn-link mt-2">
+                <input
+                    type="button"
+                    onclick="onBack()"
+                    value="Back"
+                    class="btn btn-link mt-2"
+                >
             </div>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block specfic_js %}
+<script>
+    window.onload = function () {
+    const id_main_livelihood = document.getElementById("id_main_livelihood");
+    const id_activity_elements = {
+        'Farmer': {
+            show: [".id_activity_farmer", ".id_specific_farming_activity"],
+            hide: [".id_activity_agriyouth", ".id_specific_agriyouth_activity", ".id_activity_farmworker", ".id_specific_farmworker_activity"],
+            disable: ["#id_activity_agriyouth", "#id_specific_agriyouth_activity", "#id_activity_farmworker", "#id_specific_farmworker_activity"],
+            enable: ["#id_activity_farmer", "#id_specific_farming_activity"],
+        },
+        "Farm Worker": {
+            show: [".id_activity_farmworker", ".id_specific_farmworker_activity"],
+            hide: [".id_activity_farmer", ".id_specific_farming_activity", ".id_activity_agriyouth", ".id_specific_agriyouth_activity"],
+            disable: ["#id_activity_farmer", "#id_specific_farming_activity", "#id_activity_agriyouth", "#id_specific_agriyouth_activity"],
+            enable: ["#id_activity_farmworker", "#id_specific_farmworker_activity"],
+        },
+        "Agri Youth": {
+            show: [".id_activity_agriyouth", ".id_specific_agriyouth_activity"],
+            hide: [".id_activity_farmer", ".id_specific_farming_activity", ".id_activity_farmworker", ".id_specific_farmworker_activity"],
+            disable: ["#id_activity_farmer", "#id_specific_farming_activity", "#id_activity_farmworker", "#id_specific_farmworker_activity"],
+            enable: ["#id_activity_agriyouth", "#id_specific_agriyouth_activity"],
+        },
+    };
+
+    const toggleElements = (livelihood) => {
+        const config = id_activity_elements[livelihood] || {};
+
+        (config.show || []).forEach(selector => {
+            document.querySelector(selector).style.display = "block";
+        });
+
+        (config.hide || []).forEach(selector => {
+            document.querySelector(selector).style.display = "none";
+        });
+
+        (config.disable || []).forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) element.setAttribute("disabled", true);
+        });
+
+        (config.enable || []).forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) element.removeAttribute("disabled");
+        });
+    };
+
+    toggleElements(id_main_livelihood.value);
+
+    id_main_livelihood.addEventListener("change", function (event) {
+        toggleElements(event.target.value);
+    });
+};
+
+</script>
+
 {% endblock %}

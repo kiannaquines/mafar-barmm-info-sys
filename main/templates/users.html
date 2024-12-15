@@ -30,16 +30,16 @@
                     <td>{{ user.email }}</td>
                     <td>
                         {% if user.is_active %}
-                        <span class="btn btn-primary btn-round btn-sm">Active</span>
+                        <span class="badge bg-primary">Active</span>
                         {% else %}
-                        <span class="btn btn-warning btn-round btn-sm">Inactive</span>
+                        <span class="badge bg-warning">Inactive</span>
                         {% endif %}
                     </td>
                     <td>{{ user.date_joined }}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-start gap-4">
                             <a href="{% url 'update_user' pk=user.id %}">
-                                <i class="fas fa-pen"></i>
+                                <i class="far fa-user"></i>
                             </a>
                             <a href="{% url 'delete_user' pk=user.id %}">
                                 <i class="far fa-trash-alt text-danger"></i>

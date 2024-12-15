@@ -90,3 +90,17 @@ STATICFILES_DIRS = [
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SERVER_SMS_IP = '10.0.0.108'
+SERVER_SMS_PORT = 8080
+SERVER_SMS_USERNAME = 'sms'
+SERVER_SMS_PASSWORD = 'R19v7OSB'
+SERVER_SMS_MESSAGE_TEMPLATE = """Assalamu alaykum {client_fullname},
+
+Your application has been successfully approved by MAFAR BARMM SGA please wait for further announcement.
+
+Thank you.
+Best Regards,
+MAFAR BARMM SGA
+"""

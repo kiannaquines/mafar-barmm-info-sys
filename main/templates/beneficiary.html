@@ -14,6 +14,7 @@
             <thead>
                 <tr>
                     <th>Beneficiary</th>
+                    <th>Status</th>
                     <th>Sex</th>
                     <th>Municipality</th>
                     <th>Livelihood</th>
@@ -25,6 +26,13 @@
                 {% for beneficiary in beneficiaries %}
                 <tr>
                     <td>{{ beneficiary.related_to.get_full_name }}</td>
+                    <td>
+                        {% if beneficiary.status == 'Approved' %}
+                        <span class="badge bg-primary">{{ beneficiary.status }}</span>
+                        {% else %}
+                        <span class="badge btn-danger">{{ beneficiary.status }}</span>
+                        {% endif %}
+                    </td>
                     <td>{{ beneficiary.related_to.gender }}</td>
                     <td>{{ beneficiary.related_to.municipality }}</td>
                     <td>
@@ -33,10 +41,16 @@
                     <td>{{ beneficiary.related_to.date_added }}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-start gap-4">
-                            <a href="#">
-                                <i class="fas fa-pen"></i>
+                            <a href="{% url 'update_beneficiary_personal_info' pk=beneficiary.related_to.id %}">
+                                <i class="far fa-user"></i>
                             </a>
-                            <a href="#">
+                            <a href="#" id="approve-and-notify" data-id="{{ beneficiary.id }}">
+                                <i class="fas fa-paper-plane"></i>
+                            </a>
+                            <a href="{% url 'update_beneficiary_farm_info' pk=beneficiary.id  %}">
+                                <i class="fas fa-book"></i>
+                            </a>
+                            <a href="{% url 'remove_beneficiary_farm_info' pk=beneficiary.related_to.id %}">
                                 <i class="far fa-trash-alt text-danger"></i>
                             </a>
                         </div>
@@ -48,4 +62,68 @@
     </div>
     
 </div>
+{% endblock %}
+
+
+{% block specfic_js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function(){
+        $(document).on('click', '#approve-and-notify', function(event){
+            event.preventDefault();
+            const id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure you want to approve and notify this beneficiary?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, agree!"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{% url "approve_and_notify" %}',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        data: {
+                            'id': id
+                        },
+                        success: function(response){
+                            if (response.status == 'success') {
+                                
+                                Swal.fire(
+                                    'Notified!',
+                                    `${response.message}`,
+                                   `${response.status}`
+                                )
+
+                                setTimeout(function() {
+                                    window.location.reload()
+                                }, 3000)
+                                
+                            } else if (response.status == 'error') {
+                                Swal.fire(
+                                    'Failed!',
+                                    `${response.message}`,
+                                    `${response.status}`
+                                )
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            Swal.fire(
+                                'Error!',
+                                'Failed to notify client.',
+                                'error'
+                            )
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -25,8 +25,40 @@ class PersonalInformationForm(forms.ModelForm):
             'is_member_in_any_cooperative': 'Are you a member in any cooperative?',
             'person_to_notify': 'Person you want to notify?',
             'contact_number': 'Contact number of person you want to notify?',
-            'member_in_ip_specific': 'Specify what Indigenous Group are you'
+            'member_in_ip_specific': 'Specify what Indigenous Group are you',
+            'relationship': 'Relationship to household head'
         }
+
+        choices_mapping_props = {
+            'gender': {
+                'choices': PersonalInformation.GENDER,
+                'required': True,
+            },
+            'education': {
+                'choices': PersonalInformation.HIGHEST_EDUCATION,
+                'required': True,
+            },
+            'religion': {
+                'choices': PersonalInformation.RELIGION,
+                'required': True,
+            },
+            'civil_status': {
+                'choices': PersonalInformation.CIVIL_STATUS,
+                'required': True,
+            },
+            'extension': {
+                'choices': PersonalInformation.EXTENSIONS,
+                'required': False,
+            },
+            'relationship': {
+                'choices': PersonalInformation.RELATIONSHIP,
+                'required': True,
+            },
+        }
+
+        for field in choices_mapping_props:
+            self.fields[field].choices = choices_mapping_props[field]['choices']
+            self.fields[field].required = choices_mapping_props[field]['required']
 
         for field_name, field in self.fields.items():
             if field_name in label_mapping:
@@ -51,6 +83,7 @@ class PersonalInformationForm(forms.ModelForm):
 class FarmProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FarmProfileForm, self).__init__(*args, **kwargs)
+
         for field_name, field in self.fields.items():
             if isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs['class'] = 'form-check-input'
