@@ -25,7 +25,6 @@ def sms_send(ip, port, username, password, message):
         return {"status": "danger", "message": "API Gateway is not running, or incorrect credentials.", "error": str(e)}
 
 def send_sms_api_interface(message, mobile):
-    mobile = [mobile]
     message = domain.Message(message, mobile)
     return sms_send(
         SERVER_SMS_IP,

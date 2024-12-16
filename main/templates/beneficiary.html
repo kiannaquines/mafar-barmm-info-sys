@@ -29,8 +29,10 @@
                     <td>
                         {% if beneficiary.status == 'Approved' %}
                         <span class="badge bg-primary">{{ beneficiary.status }}</span>
-                        {% else %}
+                        {% elif beneficiary.status == 'Disapproved' %}
                         <span class="badge btn-danger">{{ beneficiary.status }}</span>
+                        {% else %}
+                        <span class="badge btn-warning">{{ beneficiary.status }}</span>
                         {% endif %}
                     </td>
                     <td>{{ beneficiary.related_to.gender }}</td>

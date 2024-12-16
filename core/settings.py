@@ -96,11 +96,11 @@ SERVER_SMS_IP = '10.0.0.108'
 SERVER_SMS_PORT = 8080
 SERVER_SMS_USERNAME = 'sms'
 SERVER_SMS_PASSWORD = 'R19v7OSB'
-SERVER_SMS_MESSAGE_TEMPLATE = """Assalamu alaykum {client_fullname},
+SERVER_SMS_MESSAGE_TEMPLATE = """Assalamu Alaykum {client_fullname},
 
-Your application has been successfully approved by MAFAR BARMM SGA please wait for further announcement.
+Your application has been {status} by MAFAR BARMM SGA please wait for further announcement.
 
-Thank you.
+Sukran
 Best Regards,
 MAFAR BARMM SGA
 """

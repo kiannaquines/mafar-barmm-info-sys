@@ -7,35 +7,61 @@
             <h3 class="fw-bold mb-3">Export Report</h3>
             <h6 class="op-7 mb-2">Export your report here</h6>
         </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <a href="#" class="btn btn-primary btn-round">Export Report</a>
-        </div>
     </div>
     {% include './includes/message.html' %}
+    <div class="card py-3 px-3">
+        <form method="post">
+            {% csrf_token %}
+           <div class="row">
+            {% for input in export_form %}
+                <div class="col-md-6">
+                    <div class="form-group mb-2">
+                        <label for="{{ input.id_for_label }}" class="form-label">{{ input.label }} 
+                            {% if input.field.required %}
+                                <span class="text-danger">*</span>   
+                            {% endif %}
+                        </label>
+                        {{ input }}
+                    </div>
+                </div>
+            {% endfor %}
+           </div>
+           <div class="form-group">
+                <input type="submit" value="Export Report" class="btn btn-primary">
+           </div>
+        </form>
+    </div>
     <div class="card py-3">
         <table class="table" id="datatable">
             <thead>
                 <tr>
-                    <th>Tourist</th>
-                    <th>Tourist Spot</th>
+                    <th>Beneficiary</th>
+                    <th>Status</th>
+                    <th>Sex</th>
+                    <th>Municipality</th>
+                    <th>Livelihood</th>
                     <th>Date Added</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for tourist in tourists %}
+                {% for beneficiary in items %}
                 <tr>
-                    <td>{{ tourist.get_full_name }}</td>
-                    <td>{{ tourist.destination }}</td>
-                    <td>{{ tourist.visit_date }}</td>
-                    <td class="d-flex align-items-left justify-content-start gap-2">
-                        <a href="#">
-                            <i class="fas fa-pen"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fas fa-trash text-danger"></i>
-                        </a>
+                    <td>{{ beneficiary.related_to.get_full_name }}</td>
+                    <td>
+                        {% if beneficiary.status == 'Approved' %}
+                        <span class="badge bg-primary">{{ beneficiary.status }}</span>
+                        {% elif beneficiary.status == 'Disapproved' %}
+                        <span class="badge btn-danger">{{ beneficiary.status }}</span>
+                        {% else %}
+                        <span class="badge btn-warning">{{ beneficiary.status }}</span>
+                        {% endif %}
                     </td>
+                    <td>{{ beneficiary.related_to.gender }}</td>
+                    <td>{{ beneficiary.related_to.municipality }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
+                    </td>
+                    <td>{{ beneficiary.related_to.date_added }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

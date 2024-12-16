@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 
 
@@ -192,7 +191,7 @@ class FarmProfile(models.Model):
         max_length=50, null=True, blank=True
     )
 
-    status = models.CharField(max_length=100, default='Pending', null=True, blank=True, choices=(('Pending','Pending'),('Approved','Approved')))
+    status = models.CharField(max_length=100, default='Pending', null=True, blank=True, choices=(('Pending','Pending'),('Approved','Approved'), ('Disapproved','Disapproved')))
     date_added = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.related_to.get_full_name()
@@ -213,7 +212,7 @@ class NotificationSent(models.Model):
     
 
 class Notification(models.Model):
-    message = models.TextField(max_length=255)
+    message = models.TextField(max_length=500)
     for_municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 

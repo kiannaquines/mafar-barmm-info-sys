@@ -26,15 +26,15 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5>
-                                <b>Todays Income</b>
+                                <b>Approved</b>
                             </h5>
-                            <p class="text-muted">All Customs Value</p>
+                            <p class="text-muted">All approved beneficiaries</p>
                         </div>
-                        <h3 class="text-info fw-bold">$170</h3>
+                        <h3 class="text-primary fw-bold">{{ approved_count }}</h3>
                     </div>
                     <div class="progress progress-sm">
                         <div
-                            class="progress-bar bg-warning w-75"
+                            class="progress-bar bg-primary w-75"
                             role="progressbar"
                             aria-valuenow="75"
                             aria-valuemin="0"
@@ -54,15 +54,15 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5>
-                                <b>Total Revenue</b>
+                                <b>Pending</b>
                             </h5>
-                            <p class="text-muted">All Customs Value</p>
+                            <p class="text-muted">All pending beneficiaries</p>
                         </div>
-                        <h3 class="text-success fw-bold">$120</h3>
+                        <h3 class="text-warning fw-bold">{{ pending_count }}</h3>
                     </div>
                     <div class="progress progress-sm">
                         <div
-                            class="progress-bar bg-success w-25"
+                            class="progress-bar bg-warning w-25"
                             role="progressbar"
                             aria-valuenow="25"
                             aria-valuemin="0"
@@ -82,11 +82,11 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5>
-                                <b>New Orders</b>
+                                <b>Disapproved</b>
                             </h5>
-                            <p class="text-muted">Fresh Order Amount</p>
+                            <p class="text-muted">Disapproved beneficiaries</p>
                         </div>
-                        <h3 class="text-danger fw-bold">15</h3>
+                        <h3 class="text-danger fw-bold">{{ disapproved_count }}</h3>
                     </div>
                     <div class="progress progress-sm">
                         <div
@@ -110,11 +110,11 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5>
-                                <b>New Users</b>
+                                <b>Overall</b>
                             </h5>
-                            <p class="text-muted">Joined New User</p>
+                            <p class="text-muted">Overall Beneficiaries</p>
                         </div>
-                        <h3 class="text-secondary fw-bold">12</h3>
+                        <h3 class="text-secondary fw-bold">{{ total_beneficiaries }}</h3>
                     </div>
                     <div class="progress progress-sm">
                         <div
@@ -142,9 +142,24 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="chart-container">
-                        <div id="statisticsChart"></div>
-                    </div>
+                    <table class="table" id="datatable">
+                        <thead>
+                            <tr>
+                                <th>Beneficiary</th>
+                                <th>Main Livelihood</th>
+                                <th>Date Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>{{ item.related_to.get_full_name }}</td>
+                                <td>{{ item.main_livelihood }}</td>
+                                <td>{{ item.date_added }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

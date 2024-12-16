@@ -8,7 +8,7 @@
             <h6 class="op-7 mb-2">Manage notification in the system</h6>
         </div>
         <div class="ms-md-auto py-2 py-md-0">
-            <a href="{% url 'add_user' %}" class="btn btn-primary btn-round">Create One Time Notification</a>
+            <a href="{% url 'add_notification' %}" class="btn btn-primary btn-round">Create One Time Notification</a>
         </div>
     </div>
     {% include './includes/message.html' %}
@@ -17,6 +17,7 @@
             <thead>
                 <tr>
                     <th>Notification</th>
+                    <th>Municipality</th>
                     <th>Date Added</th>
                     <th>Action</th>
                 </tr>
@@ -24,14 +25,18 @@
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{ item.notification }}</td>
+                    <td class="w-50">{{ item.message|truncatechars:150 }}</td>
+                    <td>{{ item.for_municipality }}</td>
                     <td>{{ item.date_added }}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-start gap-4">
-                            <a href="{% url 'update_user' pk=user.id %}">
-                                <i class="far fa-user"></i>
+                            <a href="#" id="notify" data-id="{{ item.id }}" data-municipality="{{ item.for_municipality }}">
+                                <i class="fas fa-paper-plane"></i>
                             </a>
-                            <a href="{% url 'delete_user' pk=user.id %}">
+                            <a href="{% url 'update_notification' pk=item.id %}">
+                                <i class="far fa-edit"></i>
+                            </a>
+                            <a href="{% url 'delete_notification' pk=item.id %}">
                                 <i class="far fa-trash-alt text-danger"></i>
                             </a>
                         </div>
@@ -44,3 +49,68 @@
     </div>
 </div>
 {% endblock %}
+
+{% block specfic_js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function(){
+        $(document).on('click', '#notify', function(event){
+            event.preventDefault();
+            const id = $(this).data('id');
+            const municipality = $(this).data('municipality');
+            Swal.fire({
+                title: `Are you sure you want to notify all beneficiaries with in ${municipality}?`,
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, agree!"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{% url "notification" %}',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        data: {
+                            'id': id
+                        },
+                        success: function(response){
+                            if (response.status == 'success') {
+                                
+                                Swal.fire(
+                                    'Notified!',
+                                    `${response.message}`,
+                                   `${response.status}`
+                                )
+
+                                setTimeout(function() {
+                                    window.location.reload()
+                                }, 3000)
+                                
+                            } else if (response.status == 'error') {
+                                Swal.fire(
+                                    'Failed!',
+                                    `${response.message}`,
+                                    `${response.status}`
+                                )
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            Swal.fire(
+                                'Error!',
+                                'Failed to notify client.',
+                                'error'
+                            )
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+

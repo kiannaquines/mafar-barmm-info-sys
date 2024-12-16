@@ -18,14 +18,16 @@ urlpatterns = [
     path('mafar/beneficiary/farm/edit/<int:pk>', UpdateFarmInfoView.as_view(), name="update_beneficiary_farm_info"),
     path('mafar/beneficiary/delete/<int:pk>', DeleteBeneficaryView.as_view(), name="remove_beneficiary_farm_info"),
 
-    # Notification SMS
-
-    # Export PDF
-
     # Notification
     path('mafar/notification', NotificationView.as_view(), name="notification"),
+    path('mafar/notification/add', AddNotificationView.as_view(), name="add_notification"),
+    path('mafar/notification/update/<int:pk>', UpdateNotoficationInfoView.as_view(), name="update_notification"),
+    path('mafar/notification/delete/<int:pk>', DeleteNotificationInfoView.as_view(), name="delete_notification"),
 
     # Approve and Notify
     path('mafar/approve_and_notify', ApproveAndNotifyView.as_view(), name="approve_and_notify"),
+
+    # Report
+    path('mafar/report', ReportView.as_view(), name="report"),
 
 ]

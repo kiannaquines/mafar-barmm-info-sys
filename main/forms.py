@@ -5,6 +5,41 @@ from main.models import *
 
 User = get_user_model()
 
+class ExportReportForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=True,
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=True,
+    )
+    municipality = forms.ModelChoiceField(
+        empty_label="Select Municipality",
+        queryset=Municpality.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Municipality",
+        required=False,
+    )
+    barangay = forms.ModelChoiceField(
+        empty_label="Select Barangay",
+        queryset=Barangay.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Barangay",
+        required=False,
+    )
+
+class NotificationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(NotificationForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), max_length=255, required=True)
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), max_length=255, required=True)
