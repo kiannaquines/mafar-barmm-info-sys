@@ -10,57 +10,59 @@
     </div>
     {% include './includes/message.html' %}
     <div class="card py-3">
-        <table class="table" id="datatable">
-            <thead>
-                <tr>
-                    <th>Beneficiary</th>
-                    <th>Status</th>
-                    <th>Sex</th>
-                    <th>Municipality</th>
-                    <th>Livelihood</th>
-                    <th>Date Added</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for beneficiary in beneficiaries %}
-                <tr>
-                    <td>{{ beneficiary.related_to.get_full_name }}</td>
-                    <td>
-                        {% if beneficiary.status == 'Approved' %}
-                        <span class="badge bg-primary">{{ beneficiary.status }}</span>
-                        {% elif beneficiary.status == 'Disapproved' %}
-                        <span class="badge btn-danger">{{ beneficiary.status }}</span>
-                        {% else %}
-                        <span class="badge btn-warning">{{ beneficiary.status }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ beneficiary.related_to.gender }}</td>
-                    <td>{{ beneficiary.related_to.municipality }}</td>
-                    <td>
-                        <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
-                    </td>
-                    <td>{{ beneficiary.related_to.date_added }}</td>
-                    <td>
-                        <div class="d-flex align-items-center justify-content-start gap-4">
-                            <a href="{% url 'update_beneficiary_personal_info' pk=beneficiary.related_to.id %}">
-                                <i class="far fa-user"></i>
-                            </a>
-                            <a href="#" id="approve-and-notify" data-id="{{ beneficiary.id }}">
-                                <i class="fas fa-paper-plane"></i>
-                            </a>
-                            <a href="{% url 'update_beneficiary_farm_info' pk=beneficiary.id  %}">
-                                <i class="fas fa-book"></i>
-                            </a>
-                            <a href="{% url 'remove_beneficiary_farm_info' pk=beneficiary.related_to.id %}">
-                                <i class="far fa-trash-alt text-danger"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Beneficiary</th>
+                        <th>Status</th>
+                        <th>Gender</th>
+                        <th>Municipality</th>
+                        <th>Livelihood</th>
+                        <th>Date Added</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for beneficiary in beneficiaries %}
+                    <tr>
+                        <td>{{ beneficiary.related_to.get_full_name }}</td>
+                        <td>
+                            {% if beneficiary.status == 'Approved' %}
+                            <span class="badge bg-primary">{{ beneficiary.status }}</span>
+                            {% elif beneficiary.status == 'Disapproved' %}
+                            <span class="badge btn-danger">{{ beneficiary.status }}</span>
+                            {% else %}
+                            <span class="badge btn-warning">{{ beneficiary.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ beneficiary.related_to.gender }}</td>
+                        <td>{{ beneficiary.related_to.municipality }}</td>
+                        <td>
+                            <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
+                        </td>
+                        <td>{{ beneficiary.related_to.date_added }}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-start gap-4">
+                                <a href="{% url 'update_beneficiary_personal_info' pk=beneficiary.related_to.id %}">
+                                    <i class="far fa-user"></i>
+                                </a>
+                                <a href="#" id="approve-and-notify" data-id="{{ beneficiary.id }}">
+                                    <i class="fas fa-paper-plane"></i>
+                                </a>
+                                <a href="{% url 'update_beneficiary_farm_info' pk=beneficiary.id  %}">
+                                    <i class="fas fa-book"></i>
+                                </a>
+                                <a href="{% url 'remove_beneficiary_farm_info' pk=beneficiary.related_to.id %}">
+                                    <i class="far fa-trash-alt text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     
 </div>

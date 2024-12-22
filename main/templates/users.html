@@ -13,44 +13,46 @@
     </div>
     {% include './includes/message.html' %}
     <div class="card py-3">
-        <table class="table" id="datatable">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Active</th>
-                    <th>Date Joined</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                        {% if user.is_active %}
-                        <span class="badge bg-primary">Active</span>
-                        {% else %}
-                        <span class="badge bg-warning">Inactive</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ user.date_joined }}</td>
-                    <td>
-                        <div class="d-flex align-items-center justify-content-start gap-4">
-                            <a href="{% url 'update_user' pk=user.id %}">
-                                <i class="far fa-user"></i>
-                            </a>
-                            <a href="{% url 'delete_user' pk=user.id %}">
-                                <i class="far fa-trash-alt text-danger"></i>
-                            </a>
-                        </div>
-                    </td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Active</th>
+                        <th>Date Joined</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.is_active %}
+                            <span class="badge bg-primary">Active</span>
+                            {% else %}
+                            <span class="badge bg-warning">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.date_joined }}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-start gap-4">
+                                <a href="{% url 'update_user' pk=user.id %}">
+                                    <i class="far fa-user"></i>
+                                </a>
+                                <a href="{% url 'delete_user' pk=user.id %}">
+                                    <i class="far fa-trash-alt text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+    
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

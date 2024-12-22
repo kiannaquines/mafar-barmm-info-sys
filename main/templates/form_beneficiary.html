@@ -254,9 +254,9 @@
         const id_name_of_household_head = document.getElementById("id_name_of_household_head");
 
         if (is_household_head) {
-            id_name_of_household_head.setAttribute("readonly", true);
-        } else {
             id_name_of_household_head.removeAttribute("readonly");
+        } else {
+            id_name_of_household_head.setAttribute("readonly", true);
         }
     }
 
@@ -287,9 +287,9 @@
         const id_name_of_household_head = document.getElementById("id_name_of_household_head");
     
         if (e.target.checked === true) {
-            id_name_of_household_head.removeAttribute("readonly");
-        } else {
             id_name_of_household_head.setAttribute("readonly", true);
+        } else {
+            id_name_of_household_head.removeAttribute("readonly");
         }
 
     });

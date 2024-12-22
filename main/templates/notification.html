@@ -13,39 +13,41 @@
     </div>
     {% include './includes/message.html' %}
     <div class="card py-3">
-        <table class="table" id="datatable">
-            <thead>
-                <tr>
-                    <th>Notification</th>
-                    <th>Municipality</th>
-                    <th>Date Added</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td class="w-50">{{ item.message|truncatechars:150 }}</td>
-                    <td>{{ item.for_municipality }}</td>
-                    <td>{{ item.date_added }}</td>
-                    <td>
-                        <div class="d-flex align-items-center justify-content-start gap-4">
-                            <a href="#" id="notify" data-id="{{ item.id }}" data-municipality="{{ item.for_municipality }}">
-                                <i class="fas fa-paper-plane"></i>
-                            </a>
-                            <a href="{% url 'update_notification' pk=item.id %}">
-                                <i class="far fa-edit"></i>
-                            </a>
-                            <a href="{% url 'delete_notification' pk=item.id %}">
-                                <i class="far fa-trash-alt text-danger"></i>
-                            </a>
-                        </div>
-                    </td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Notification</th>
+                        <th>Municipality</th>
+                        <th>Date Added</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="w-50">{{ item.message|truncatechars:150 }}</td>
+                        <td>{{ item.for_municipality }}</td>
+                        <td>{{ item.date_added }}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-start gap-4">
+                                <a href="#" id="notify" data-id="{{ item.id }}" data-municipality="{{ item.for_municipality }}">
+                                    <i class="fas fa-paper-plane"></i>
+                                </a>
+                                <a href="{% url 'update_notification' pk=item.id %}">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <a href="{% url 'delete_notification' pk=item.id %}">
+                                    <i class="far fa-trash-alt text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+    
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

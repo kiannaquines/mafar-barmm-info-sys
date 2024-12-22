@@ -12,7 +12,7 @@ urlpatterns = [
 
 
     # Beneficiary
-    path('mafar/beneficiary/', BeneficiaryView.as_view(), name="beneficiary"),
+    path('mafar/beneficiary/list', BeneficiaryView.as_view(), name="beneficiary"),
     path('mafar/beneficiary/add', AddBeneficiaryView.as_view(), name="add_beneficiary"),
     path('mafar/beneficiary/personal/edit/<int:pk>', UpdatePersonalInfoView.as_view(), name="update_beneficiary_personal_info"),
     path('mafar/beneficiary/farm/edit/<int:pk>', UpdateFarmInfoView.as_view(), name="update_beneficiary_farm_info"),

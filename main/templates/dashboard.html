@@ -110,24 +110,26 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="datatable">
-                        <thead>
-                            <tr>
-                                <th>Beneficiary</th>
-                                <th>Main Livelihood</th>
-                                <th>Date Added</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in items %}
-                            <tr>
-                                <td>{{ item.related_to.get_full_name }}</td>
-                                <td>{{ item.main_livelihood }}</td>
-                                <td>{{ item.date_added }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th>Beneficiary</th>
+                                    <th>Main Livelihood</th>
+                                    <th>Date Added</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <td>{{ item.related_to.get_full_name }}</td>
+                                    <td>{{ item.main_livelihood }}</td>
+                                    <td>{{ item.date_added }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

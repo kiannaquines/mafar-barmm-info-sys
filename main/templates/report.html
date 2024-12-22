@@ -32,40 +32,42 @@
         </form>
     </div>
     <div class="card py-3">
-        <table class="table" id="datatable">
-            <thead>
-                <tr>
-                    <th>Beneficiary</th>
-                    <th>Status</th>
-                    <th>Sex</th>
-                    <th>Municipality</th>
-                    <th>Livelihood</th>
-                    <th>Date Added</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for beneficiary in items %}
-                <tr>
-                    <td>{{ beneficiary.related_to.get_full_name }}</td>
-                    <td>
-                        {% if beneficiary.status == 'Approved' %}
-                        <span class="badge bg-primary">{{ beneficiary.status }}</span>
-                        {% elif beneficiary.status == 'Disapproved' %}
-                        <span class="badge btn-danger">{{ beneficiary.status }}</span>
-                        {% else %}
-                        <span class="badge btn-warning">{{ beneficiary.status }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ beneficiary.related_to.gender }}</td>
-                    <td>{{ beneficiary.related_to.municipality }}</td>
-                    <td>
-                        <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
-                    </td>
-                    <td>{{ beneficiary.related_to.date_added }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Beneficiary</th>
+                        <th>Status</th>
+                        <th>Sex</th>
+                        <th>Municipality</th>
+                        <th>Livelihood</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for beneficiary in items %}
+                    <tr>
+                        <td>{{ beneficiary.related_to.get_full_name }}</td>
+                        <td>
+                            {% if beneficiary.status == 'Approved' %}
+                            <span class="badge bg-primary">{{ beneficiary.status }}</span>
+                            {% elif beneficiary.status == 'Disapproved' %}
+                            <span class="badge btn-danger">{{ beneficiary.status }}</span>
+                            {% else %}
+                            <span class="badge btn-warning">{{ beneficiary.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ beneficiary.related_to.gender }}</td>
+                        <td>{{ beneficiary.related_to.municipality }}</td>
+                        <td>
+                            <span class="badge bg-primary">{{ beneficiary.main_livelihood }}</span>
+                        </td>
+                        <td>{{ beneficiary.related_to.date_added }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     
 </div>
