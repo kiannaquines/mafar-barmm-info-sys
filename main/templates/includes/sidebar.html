@@ -1,4 +1,6 @@
 {% load static %}
+{% load group_tags %}
+
 <div class="sidebar" data-background-color="white">
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="white">
@@ -28,12 +30,10 @@
     {% if request.user.is_superuser and request.user.is_active %}
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
+            {% if request.user|in_group:"Staff" %}
             <ul class="nav nav-secondary">
                 <li class="nav-item {% if 'dashboard' in request.path %}active{% endif %}">
-                    <a
-                        href="{% url 'dashboard' %}"
-                        class="collapsed"
-                    >
+                    <a href="{% url 'dashboard' %}" class="collapsed">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
@@ -44,89 +44,71 @@
                     </span>
                     <h4 class="text-section">Beneficiary Module</h4>
                 </li>
-                
                 <li class="nav-item">
-                    <a
-                        href="{% url 'beneficiary' %}"
-                        class="collapsed"
-                    >
-                    <i class="fas fa-users"></i>
+                    <a href="{% url 'beneficiary' %}" class="collapsed">
+                        <i class="fas fa-users"></i>
                         <p>Manage Beneficiary</p>
                     </a>
                 </li>
-
                 <li class="nav-item">
-                    <a
-                        href="{% url 'add_beneficiary' %}"
-                        class="collapsed"
-                    >
-                    <i class="far fa-user"></i>
+                    <a href="{% url 'add_beneficiary' %}" class="collapsed">
+                        <i class="far fa-user"></i>
                         <p>Create Beneficiary</p>
                     </a>
                 </li>
-
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">User Module</h4>
-                </li>
-                
                 <li class="nav-item">
-                    <a
-                        href="{% url 'users' %}"
-                        class="collapsed"
-                    >
-                    <i class="fas fa-users"></i>
-                        <p>Manage Users</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a
-                        href="{% url 'add_user' %}"
-                        class="collapsed"
-                    >
+                    <a href="{% url 'add_user' %}" class="collapsed">
                         <i class="far fa-user"></i>
                         <p>Create User</p>
                     </a>
                 </li>
-
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Report Module</h4>
-                </li>
-                
-                <li class="nav-item">
-                    <a
-                        href="{% url 'report' %}"
-                        class="collapsed"
-                    >
-                        <i class="far fa-file"></i>
-                        <p>Export PDF Report</p>
-                    </a>
-                </li>
-
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <h4 class="text-section">Notification Module</h4>
                 </li>
-                
                 <li class="nav-item">
-                    <a
-                        href="{% url 'notification' %}"
-                        class="collapsed"
-                    >
+                    <a href="{% url 'notification' %}" class="collapsed">
                         <i class="far fa-bell"></i>
                         <p>Sent Notification</p>
                     </a>
                 </li>
-
             </ul>
+            {% else %}
+            <ul class="nav nav-secondary">
+                <li class="nav-item {% if 'dashboard' in request.path %}active{% endif %}">
+                    <a href="{% url 'dashboard' %}" class="collapsed">
+                        <i class="fas fa-home"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">User Module</h4>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'add_user' %}" class="collapsed">
+                        <i class="far fa-user"></i>
+                        <p>Create User</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Report Module</h4>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'report' %}" class="collapsed">
+                        <i class="far fa-file"></i>
+                        <p>Export PDF Report</p>
+                    </a>
+                </li>
+            </ul>
+            {% endif %}
         </div>
     </div>
     {% endif %}
