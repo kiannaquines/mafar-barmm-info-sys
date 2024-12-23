@@ -83,14 +83,14 @@
                     </span>
                     <h4 class="text-section">User Module</h4>
                 </li>
-                <li class="nav-item {% if 'users' in request.path %}active{% endif %}">
+                <li class="nav-item {% if 'list' in request.path %}active{% endif %}">
                     <a href="{% url 'users' %}" class="collapsed">
                         <i class="far fa-user"></i>
                         <p>Manage User</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'add_user' %} {% if 'users' in request.path %}active{% endif %}" class="collapsed">
+                <li class="nav-item {% if 'add' in request.path %}active{% endif %}">
+                    <a href="{% url 'add_user' %}" class="collapsed">
                         <i class="far fa-user"></i>
                         <p>Create User</p>
                     </a>

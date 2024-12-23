@@ -19,19 +19,19 @@
                     <tr>
                         <th>Notification</th>
                         <th>Municipality</th>
-                        <th>Date Added</th>
+                        <th>Farmer Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in items %}
                     <tr>
-                        <td class="w-50">{{ item.message|truncatechars:150 }}</td>
+                        <td class="w-40">{{ item.message|truncatechars:150 }}</td>
                         <td>{{ item.for_municipality }}</td>
-                        <td>{{ item.date_added }}</td>
+                        <td>{{ item.farmer_type }}</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-start gap-4">
-                                <a href="#" id="notify" data-id="{{ item.id }}" data-municipality="{{ item.for_municipality }}">
+                                <a href="#" id="notify" data-id="{{ item.id }}" data-type="{{ item.farmer_type }}" data-municipality="{{ item.for_municipality }}">
                                     <i class="fas fa-paper-plane"></i>
                                 </a>
                                 <a href="{% url 'update_notification' pk=item.id %}">
@@ -61,8 +61,9 @@
             event.preventDefault();
             const id = $(this).data('id');
             const municipality = $(this).data('municipality');
+            const type = $(this).data('type');
             Swal.fire({
-                title: `Are you sure you want to notify all beneficiaries with in ${municipality}?`,
+                title: `Are you sure you want to notify ${type.toLowerCase()} beneficiaries with in ${municipality}?`,
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
@@ -78,7 +79,8 @@
                             'X-CSRFToken': '{{ csrf_token }}',
                         },
                         data: {
-                            'id': id
+                            'id': id,
+                            'type': type,
                         },
                         success: function(response){
                             if (response.status == 'success') {

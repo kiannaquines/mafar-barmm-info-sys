@@ -38,7 +38,8 @@ class NotificationView(MustBeLoggedIn, View):
     def post(self, request):
         notification = Notification.objects.filter(id=request.POST.get('id')).first()
         beneficiaries_within_place = FarmProfile.objects.filter(
-            related_to__municipality=notification.for_municipality
+            related_to__municipality=notification.for_municipality,
+            main_livelihood=request.POST.get('type'),
         )
 
         message = notification.message

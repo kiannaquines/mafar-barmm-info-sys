@@ -214,6 +214,10 @@ class NotificationSent(models.Model):
 class Notification(models.Model):
     message = models.TextField(max_length=500)
     for_municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE)
+    farmer_type = models.CharField(
+        choices=FarmProfile.MAIN_LIVELIHOOD, max_length=255,
+        default="Farmer"
+    )
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
