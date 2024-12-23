@@ -8,20 +8,21 @@ class Barangay(models.Model):
         verbose_name_plural = "Barangay"
         verbose_name = "Barangay"
 
-
     def __str__(self) -> str:
         return self.barangay
-    
+
+
 class Municpality(models.Model):
     municipality = models.CharField(max_length=255)
 
     class Meta:
         verbose_name_plural = "Municipality"
         verbose_name = "Municipality"
-    
+
     def __str__(self) -> str:
         return self.municipality
-    
+
+
 class PersonalInformation(models.Model):
     EXTENSIONS = (
         ("None", "None"),
@@ -71,20 +72,30 @@ class PersonalInformation(models.Model):
         max_length=255, help_text="Beneficiary last name", db_index=True
     )
     extension = models.CharField(
-        max_length=255, help_text="Extension", choices=EXTENSIONS, db_index=True, 
-        null=True, blank=True
+        max_length=255,
+        help_text="Extension",
+        choices=EXTENSIONS,
+        db_index=True,
+        null=True,
+        blank=True,
     )
     gender = models.CharField(max_length=255, help_text="Gender", choices=GENDER)
 
     purok = models.CharField(max_length=255, help_text="Purok")
-    municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE, help_text="Municipality")
-    barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE, help_text="Barangay")
+    municipality = models.ForeignKey(
+        Municpality, on_delete=models.CASCADE, help_text="Municipality"
+    )
+    barangay = models.ForeignKey(
+        Barangay, on_delete=models.CASCADE, help_text="Barangay"
+    )
     street = models.CharField(max_length=255, help_text="Street")
     province = models.CharField(max_length=255, help_text="Province")
     region = models.CharField(max_length=255, help_text="Region")
 
     mobile_number = models.CharField(max_length=11, help_text="Mobile Number")
-    landline_number = models.CharField(max_length=255, help_text="Landline Number", blank=True, null=True)
+    landline_number = models.CharField(
+        max_length=255, help_text="Landline Number", blank=True, null=True
+    )
     dob = models.CharField(max_length=255, help_text="Date of Birth")
     pob = models.CharField(max_length=255, help_text="Place of Birth")
     provice_place_of_birth = models.CharField(
@@ -101,29 +112,63 @@ class PersonalInformation(models.Model):
         default=False, help_text="Member of an Indigenous Group"
     )
     is_household_head = models.BooleanField(default=False, help_text="Household head")
-    is_with_government_id = models.BooleanField(default=False, help_text="Government ID")
-    is_member_in_any_cooperative = models.BooleanField(default=False, help_text="Member in any cooperative")
-
-    member_in_ip_specific = models.CharField(
-        max_length=255, help_text="Specific Indigenous Group",
-        null=True, blank=True
+    is_with_government_id = models.BooleanField(
+        default=False, help_text="Government ID"
+    )
+    is_member_in_any_cooperative = models.BooleanField(
+        default=False, help_text="Member in any cooperative"
     )
 
-    religion = models.CharField(max_length=255, choices=RELIGION, help_text="Region you belong")
-    civil_status = models.CharField(max_length=255, choices=CIVIL_STATUS, help_text="Civil status")
-    name_of_spouse_if_married = models.CharField(max_length=255, null=True, blank=True, help_text="Name of spouse if married")
-    mother_maiden_name = models.CharField(max_length=255, help_text="Mother maiden name")
+    member_in_ip_specific = models.CharField(
+        max_length=255, help_text="Specific Indigenous Group", null=True, blank=True
+    )
 
-    name_of_household_head = models.CharField(max_length=255, help_text="Name of Household", blank=True, null=True)
-    relationship = models.CharField(max_length=255, choices=RELATIONSHIP, null=True, blank=True, help_text="Relationship")
-    number_of_living_household = models.IntegerField(default=0, null=True, blank=True, help_text="No. of living in your household")
-    number_of_male = models.IntegerField(default=0, null=True, blank=True, help_text="No. of male in your household")
-    number_of_female = models.IntegerField(default=0, null=True, blank=True, help_text="No. of female in your household")
+    religion = models.CharField(
+        max_length=255, choices=RELIGION, help_text="Region you belong"
+    )
+    civil_status = models.CharField(
+        max_length=255, choices=CIVIL_STATUS, help_text="Civil status"
+    )
+    name_of_spouse_if_married = models.CharField(
+        max_length=255, null=True, blank=True, help_text="Name of spouse if married"
+    )
+    mother_maiden_name = models.CharField(
+        max_length=255, help_text="Mother maiden name"
+    )
 
-    type_of_id = models.CharField(max_length=255, null=True, blank=True, help_text="What type of ID you have?")
-    id_number = models.CharField(max_length=255, null=True, blank=True, help_text="Enter your ID number")
+    name_of_household_head = models.CharField(
+        max_length=255, help_text="Name of Household", blank=True, null=True
+    )
+    relationship = models.CharField(
+        max_length=255,
+        choices=RELATIONSHIP,
+        null=True,
+        blank=True,
+        help_text="Relationship",
+    )
+    number_of_living_household = models.IntegerField(
+        default=0, null=True, blank=True, help_text="No. of living in your household"
+    )
+    number_of_male = models.IntegerField(
+        default=0, null=True, blank=True, help_text="No. of male in your household"
+    )
+    number_of_female = models.IntegerField(
+        default=0, null=True, blank=True, help_text="No. of female in your household"
+    )
 
-    specify_cooperative = models.CharField(max_length=255, null=True, blank=True, help_text="Specify what cooperative you are member with")
+    type_of_id = models.CharField(
+        max_length=255, null=True, blank=True, help_text="What type of ID you have?"
+    )
+    id_number = models.CharField(
+        max_length=255, null=True, blank=True, help_text="Enter your ID number"
+    )
+
+    specify_cooperative = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="Specify what cooperative you are member with",
+    )
 
     person_to_notify = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=255)
@@ -187,12 +232,21 @@ class FarmProfile(models.Model):
     activity_agriyouth = models.CharField(
         max_length=50, choices=AGRIYOUTH_WORKER, null=True, blank=True
     )
-    specific_agriyouth_activity = models.CharField(
-        max_length=50, null=True, blank=True
-    )
+    specific_agriyouth_activity = models.CharField(max_length=50, null=True, blank=True)
 
-    status = models.CharField(max_length=100, default='Pending', null=True, blank=True, choices=(('Pending','Pending'),('Approved','Approved'), ('Disapproved','Disapproved')))
+    status = models.CharField(
+        max_length=100,
+        default="Pending",
+        null=True,
+        blank=True,
+        choices=(
+            ("Pending", "Pending"),
+            ("Approved", "Approved"),
+            ("Disapproved", "Disapproved"),
+        ),
+    )
     date_added = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.related_to.get_full_name()
 
@@ -209,14 +263,13 @@ class NotificationSent(models.Model):
 
     def __str__(self) -> str:
         return f"{self.sent_to.get_full_name()} - {self.date_sent}"
-    
+
 
 class Notification(models.Model):
     message = models.TextField(max_length=500)
     for_municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE)
     farmer_type = models.CharField(
-        choices=FarmProfile.MAIN_LIVELIHOOD, max_length=255,
-        default="Farmer"
+        choices=FarmProfile.MAIN_LIVELIHOOD, max_length=255, default="Farmer"
     )
     date_added = models.DateTimeField(auto_now_add=True)
 

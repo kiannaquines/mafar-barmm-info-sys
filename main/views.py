@@ -185,10 +185,17 @@ class ReportView(MustBeLoggedIn, View):
             end_date = timezone.make_aware(datetime.combine(form.cleaned_data['end_date'], time.max))
             municipality = form.cleaned_data['municipality']
             barangay = form.cleaned_data['barangay']
+            farmer_type = form.cleaned_data['farmer_type']
 
-            query = FarmProfile.objects.filter(
-                date_added__range=(start_date, end_date)
-            ).order_by('-date_added')
+            if farmer_type == "All":
+                query = FarmProfile.objects.filter(
+                    date_added__range=(start_date, end_date),
+                ).order_by('-date_added')
+            else:
+                query = FarmProfile.objects.filter(
+                    date_added__range=(start_date, end_date),
+                    main_livelihood=farmer_type
+                ).order_by('-date_added')
 
             if municipality:
                 header_first = municipality
@@ -202,6 +209,9 @@ class ReportView(MustBeLoggedIn, View):
             else:
                 header_secondary = "All Barangay"
             
+            if not query.exists():
+                request_message(request=request, message='Sorry, no data found with your filter provided, please try again.', tag='danger')
+                return redirect('report')
 
             buffer = BytesIO()
             response = HttpResponse(content_type="application/pdf")

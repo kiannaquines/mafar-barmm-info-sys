@@ -29,6 +29,17 @@ class ExportReportForm(forms.Form):
         required=False,
     )
 
+    farmer_type = forms.ChoiceField(
+        required=False,
+        choices=(
+            ("All", "All"),
+            ("Farmer", "Farmer"),
+            ("Farm Worker", "Farm Worker"),
+            ("Agri Youth", "Agri Youth"),
+        ),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
 class NotificationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NotificationForm, self).__init__(*args, **kwargs)
