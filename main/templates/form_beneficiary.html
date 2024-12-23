@@ -104,7 +104,6 @@
                     </div>
                 </div>
                 {% endif %}
-
                 {% endfor %}
             </div>
             <div class="row">
@@ -238,10 +237,8 @@
 
     
         if (!withGovernmentID.checked) {
-
             const id_type_of_id = document.getElementById("id_type_of_id");
             const id_id_number = document.getElementById("id_id_number");
-
             id_type_of_id.setAttribute("readonly",true);
             id_id_number.setAttribute("readonly",true);
         }
@@ -281,7 +278,6 @@
             id_specify_cooperative.setAttribute("readonly",true);
         }
     });
-
 
     document.querySelector("#id_is_household_head").addEventListener("change", function(e){
         const id_name_of_household_head = document.getElementById("id_name_of_household_head");
