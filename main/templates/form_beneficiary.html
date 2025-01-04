@@ -250,7 +250,7 @@
         const is_household_head = document.getElementById("id_is_household_head");
         const id_name_of_household_head = document.getElementById("id_name_of_household_head");
 
-        if (is_household_head) {
+        if (is_household_head.value.checked) {
             id_name_of_household_head.removeAttribute("readonly");
         } else {
             id_name_of_household_head.setAttribute("readonly", true);
@@ -282,7 +282,7 @@
     document.querySelector("#id_is_household_head").addEventListener("change", function(e){
         const id_name_of_household_head = document.getElementById("id_name_of_household_head");
     
-        if (e.target.checked === true) {
+        if (e.target.checked) {
             id_name_of_household_head.setAttribute("readonly", true);
         } else {
             id_name_of_household_head.removeAttribute("readonly");

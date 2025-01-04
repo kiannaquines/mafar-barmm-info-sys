@@ -27,10 +27,9 @@
             </button>
         </div>
     </div>
-    {% if request.user.is_superuser and request.user.is_active %}
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
-            {% if request.user|in_group:"Staff" %}
+            {% if request.user.is_staff %}
             <ul class="nav nav-secondary">
                 <li class="nav-item {% if 'dashboard' in request.path %}active{% endif %}">
                     <a href="{% url 'dashboard' %}" class="collapsed">
@@ -111,5 +110,4 @@
             {% endif %}
         </div>
     </div>
-    {% endif %}
 </div>
