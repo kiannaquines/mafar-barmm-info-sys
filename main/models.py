@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Barangay(models.Model):
+    municipality = models.ForeignKey('Municpality', on_delete=models.CASCADE, blank=True, null=True)
     barangay = models.CharField(max_length=255)
 
     class Meta:

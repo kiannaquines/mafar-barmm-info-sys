@@ -30,4 +30,7 @@ urlpatterns = [
     # Report
     path('mafar/report', ReportView.as_view(), name="report"),
 
+
+    path('mafar/get_barangay/list', get_barangay, name="get_barangay"),
+
 ]
