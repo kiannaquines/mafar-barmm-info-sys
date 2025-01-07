@@ -4,6 +4,7 @@ from django.db import models
 class Barangay(models.Model):
     municipality = models.ForeignKey('Municpality', on_delete=models.CASCADE, blank=True, null=True)
     barangay = models.CharField(max_length=255)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Barangay"
@@ -15,7 +16,7 @@ class Barangay(models.Model):
 
 class Municpality(models.Model):
     municipality = models.CharField(max_length=255)
-
+    date_added = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural = "Municipality"
         verbose_name = "Municipality"

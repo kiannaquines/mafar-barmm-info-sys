@@ -1,0 +1,44 @@
+{% extends './includes/base.html' %}
+
+{% block content %}
+<div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">Manage Municipality</h3>
+            <h6 class="op-7 mb-2">Manage places under BARRM</h6>
+        </div>
+    </div>
+    {% include './includes/message.html' %}
+    <div class="card py-3">
+        <div class="table-responsive">
+            <table class="table" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Municipality</th>
+                        <th>Date Added</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for municipality in items %}
+                    <tr>
+                        <td>{{ municipality.municipality }}</td>
+                        <td>{{ municipality.date_added }}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-start gap-4">
+                                <a href="#">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="far fa-trash-alt text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

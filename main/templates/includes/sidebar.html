@@ -94,6 +94,24 @@
                         <p>Create User</p>
                     </a>
                 </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Municipality & Barangay</h4>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'barangay' %}" class="collapsed">
+                        <i class="far fa-user"></i>
+                        <p>Manage Barangay</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'municipality' %}" class="collapsed">
+                        <i class="far fa-user"></i>
+                        <p>Manage Municipality</p>
+                    </a>
+                </li>
                 <li class="nav-section {% if 'report' in request.path %}active{% endif %}">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>

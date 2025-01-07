@@ -644,3 +644,22 @@ class DeleteBeneficaryView(MustBeLoggedIn, DeleteView):
         for field, errors in form.errors.items():
             for error in errors:
                 request_message(request=self.request, message=error, tag="danger")
+
+
+
+class MunicipalityView(MustBeLoggedIn, View):
+    template_name = "municipality.html"
+    context = {}
+
+    def get(self, request):
+        self.context["items"] = Municpality.objects.order_by("-date_added")
+        return render(request, self.template_name, self.context)
+    
+
+class BarangayView(MustBeLoggedIn, View):
+    template_name = "barangay.html"
+    context = {}
+
+    def get(self, request):
+        self.context["items"] = Barangay.objects.order_by("-date_added")
+        return render(request, self.template_name, self.context)

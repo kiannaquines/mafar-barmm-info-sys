@@ -33,4 +33,11 @@ urlpatterns = [
 
     path('mafar/get_barangay/list', get_barangay, name="get_barangay"),
 
+
+
+
+    path('mafar/barangay', BarangayView.as_view(), name="barangay"),
+    path('mafar/municipality', MunicipalityView.as_view(), name="municipality"),
+
+
 ]
