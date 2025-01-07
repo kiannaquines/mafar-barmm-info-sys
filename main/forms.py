@@ -183,4 +183,34 @@ class AdminUserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active']
         
-        
+
+class BarangayForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BarangayForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+            
+            field.widget.attrs['placeholder'] = field.label
+
+    class Meta:
+        model = Barangay
+        fields = '__all__'
+
+
+class MunicipalityForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MunicipalityForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+            
+            field.widget.attrs['placeholder'] = field.label
+
+    class Meta:
+        model = Municpality
+        fields = '__all__'

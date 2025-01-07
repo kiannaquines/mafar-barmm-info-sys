@@ -7,6 +7,9 @@
             <h3 class="fw-bold mb-3">Manage Barangay</h3>
             <h6 class="op-7 mb-2">Manage places under BARRM</h6>
         </div>
+        <div class="ms-md-auto py-2 py-md-0">
+            <a href="{% url 'add_barangay' %}" class="btn btn-primary btn-round">Create Barangay</a>
+        </div>
     </div>
     {% include './includes/message.html' %}
     <div class="card py-3">
@@ -28,10 +31,10 @@
                         <td>{{ barangay.date_added }}</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-start gap-4">
-                                <a href="#">
+                                <a href="{% url 'update_barangay' pk=barangay.id %}">
                                     <i class="far fa-edit"></i>
                                 </a>
-                                <a href="#">
+                                <a href="{% url 'delete_barangay' pk=barangay.id %}">
                                     <i class="far fa-trash-alt text-danger"></i>
                                 </a>
                             </div>

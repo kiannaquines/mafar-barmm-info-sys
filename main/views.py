@@ -646,7 +646,6 @@ class DeleteBeneficaryView(MustBeLoggedIn, DeleteView):
                 request_message(request=self.request, message=error, tag="danger")
 
 
-
 class MunicipalityView(MustBeLoggedIn, View):
     template_name = "municipality.html"
     context = {}
@@ -654,7 +653,7 @@ class MunicipalityView(MustBeLoggedIn, View):
     def get(self, request):
         self.context["items"] = Municpality.objects.order_by("-date_added")
         return render(request, self.template_name, self.context)
-    
+
 
 class BarangayView(MustBeLoggedIn, View):
     template_name = "barangay.html"
@@ -663,3 +662,163 @@ class BarangayView(MustBeLoggedIn, View):
     def get(self, request):
         self.context["items"] = Barangay.objects.order_by("-date_added")
         return render(request, self.template_name, self.context)
+
+
+class AddMunicipalityView(CreateView):
+    template_name = "includes/form.html"
+    form_class = MunicipalityForm
+    model = Municpality
+    success_url = reverse_lazy("municipality")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Create Municipality"
+        context["subtitle"] = "Create new municipality here"
+        context["button"] = "Create Municipality"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully created a new municipality",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+
+
+class AddBarangayView(CreateView):
+    template_name = "includes/form.html"
+    form_class = BarangayForm
+    model = Barangay
+    success_url = reverse_lazy("barangay")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Create Barangay"
+        context["subtitle"] = "Create new barangay here"
+        context["button"] = "Create Barangay"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully created a new barangay",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+
+
+class UpdateBarangayView(UpdateView):
+    template_name = "includes/form.html"
+    form_class = BarangayForm
+    model = Barangay
+    success_url = reverse_lazy("barangay")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Update Barangay"
+        context["subtitle"] = "Update new barangay here"
+        context["button"] = "Update Barangay"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully update a new barangay",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+
+
+class UpdateMunicipalityView(UpdateView):
+    template_name = "includes/form.html"
+    form_class = MunicipalityForm
+    model = Municpality
+    success_url = reverse_lazy("municipality")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Update Municpality"
+        context["subtitle"] = "Update new municpality here"
+        context["button"] = "Update Municpality"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully update a new municipality",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+
+class DeleteBarangayView(MustBeLoggedIn, DeleteView):
+    pk_url_kwarg = "pk"
+    model = Barangay
+    template_name = "includes/delete.html"
+    success_url = reverse_lazy("barangay")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Delete Barangay"
+        context["subtitle"] = "Delete barangay details here"
+        context["button"] = "Delete Barangay"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully deleted barangay information",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
+
+class DeleteMunicipalityView(MustBeLoggedIn, DeleteView):
+    pk_url_kwarg = "pk"
+    model = Municpality
+    template_name = "includes/delete.html"
+    success_url = reverse_lazy("municipality")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "Delete Municipality"
+        context["subtitle"] = "Delete municipality details here"
+        context["button"] = "Delete Municipality"
+        return context
+
+    def form_valid(self, form):
+        request_message(
+            request=self.request,
+            message="You have successfully deleted municipality information",
+            tag="primary",
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                request_message(request=self.request, message=error, tag="danger")
