@@ -12,23 +12,24 @@
     <div class="card py-3 px-3">
         <form method="post">
             {% csrf_token %}
-           <div class="row">
-            {% for input in export_form %}
+            <div class="row">
+                {% for input in export_form %}
                 <div class="col-md-6">
                     <div class="form-group mb-2">
-                        <label for="{{ input.id_for_label }}" class="form-label">{{ input.label }} 
+                        <label for="{{ input.id_for_label }}" class="form-label">
+                            {{ input.label }} 
                             {% if input.field.required %}
-                                <span class="text-danger">*</span>   
+                            <span class="text-danger">*</span>
                             {% endif %}
                         </label>
                         {{ input }}
                     </div>
                 </div>
-            {% endfor %}
-           </div>
-           <div class="form-group">
+                {% endfor %}
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Export Report" class="btn btn-primary">
-           </div>
+            </div>
         </form>
     </div>
     <div class="card py-3">
@@ -69,6 +70,38 @@
             </table>
         </div>
     </div>
-    
 </div>
+{% endblock %}
+{% block specfic_js %}
+<script>
+    document.getElementById("id_municipality").addEventListener("change", function() {
+    fetch('{% url "get_barangay" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            municipality_id: this.value
+        })
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    }).then((data) => {
+        const barangaySelect = document.getElementById('id_barangay');
+        barangaySelect.innerHTML = '';
+        const option = new Option('Select Option','');
+        barangaySelect.add(option);
+        data.barangay.forEach(barangay => {
+            const option = new Option(barangay.name, barangay.id);
+            barangaySelect.add(option);
+        });
+
+    }).catch((error) => {
+        console.error('Error:', error);
+    });
+});
+</script>
 {% endblock %}

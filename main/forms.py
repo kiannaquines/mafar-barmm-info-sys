@@ -40,6 +40,12 @@ class ExportReportForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
+    farmer_activity = forms.ChoiceField(
+        required=False,
+        choices=Notification.FARMER_ACTIVITY,
+        widget=forms.Select(attrs={'class': 'form-control','placeholder': 'Select activity'}),
+    )
+
 class NotificationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NotificationForm, self).__init__(*args, **kwargs)

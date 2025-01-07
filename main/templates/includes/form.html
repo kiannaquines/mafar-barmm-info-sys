@@ -61,6 +61,38 @@
 
 {% block specfic_js %}
 <script>
+    const get_barangay = document.getElementById("id_municipality")
+
+    if (get_barangay) {
+        get_barangay.addEventListener("change", function() {
+            fetch('{% url "get_barangay" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    municipality_id: this.value
+                })
+            }).then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            }).then((data) => {
+                const barangaySelect = document.getElementById('id_barangay');
+                barangaySelect.innerHTML = '';
+                data.barangay.forEach(barangay => {
+                    const option = new Option(barangay.name, barangay.id);
+                    barangaySelect.add(option);
+                });
+    
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+    
     window.onload = function () {
     const id_main_livelihood = document.getElementById("id_main_livelihood");
     const id_activity_elements = {

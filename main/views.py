@@ -26,6 +26,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
 import json
+from django.db.models import Q
+
 
 User = get_user_model()
 
@@ -74,6 +76,8 @@ class NotificationView(MustBeLoggedIn, View):
     def post(self, request):
         notification = Notification.objects.filter(id=request.POST.get("id")).first()
         beneficiaries_within_place = FarmProfile.objects.filter(
+            Q(activity_farmer__iexact=request.POST.get("activity"))
+            | Q(activity_farmworker__iexact=request.POST.get("activity")),
             related_to__municipality=notification.for_municipality,
             main_livelihood=request.POST.get("type"),
         )
@@ -265,6 +269,7 @@ class ReportView(MustBeLoggedIn, View):
             municipality = form.cleaned_data["municipality"]
             barangay = form.cleaned_data["barangay"]
             farmer_type = form.cleaned_data["farmer_type"]
+            farmer_activity = form.cleaned_data["farmer_activity"]
 
             if farmer_type == "All":
                 query = FarmProfile.objects.filter(
@@ -287,6 +292,15 @@ class ReportView(MustBeLoggedIn, View):
                 query = query.filter(related_to__barangay=barangay)
             else:
                 header_secondary = "All Barangay"
+
+            if farmer_activity:
+                header_secondary = farmer_activity
+                query = query.filter(
+                    Q(activity_farmer__iexact=farmer_activity)
+                    | Q(activity_farmworker__iexact=farmer_activity)
+                )
+            else:
+                header_secondary = "All Farmer Activities"
 
             if not query.exists():
                 request_message(

@@ -240,6 +240,10 @@
         }).then((data) => {
             const barangaySelect = document.getElementById('id_barangay');
             barangaySelect.innerHTML = '';
+
+            const option = new Option('Select Option','');
+            barangaySelect.add(option);
+
             data.barangay.forEach(barangay => {
                 const option = new Option(barangay.name, barangay.id);
                 barangaySelect.add(option);

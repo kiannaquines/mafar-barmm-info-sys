@@ -267,10 +267,28 @@ class NotificationSent(models.Model):
 
 
 class Notification(models.Model):
+
+    FARMER_ACTIVITY = (
+        ("", "Select Option"),
+        ("Rice", "Rice"),
+        ("Corn", "Corn"),
+        ("Other Crops", "Other Crops"),
+        ("Livestock", "Livestock"),
+        ("Poultry", "Poultry"),
+        ("Land Preparation", "Land Preparation"),
+        ("Planting", "Planting"),
+        ("Cultivation", "Cultivation"),
+        ("Harvesting", "Harvesting"),
+        ("Others", "Others"),
+    )
+
     message = models.TextField(max_length=500)
     for_municipality = models.ForeignKey(Municpality, on_delete=models.CASCADE)
     farmer_type = models.CharField(
         choices=FarmProfile.MAIN_LIVELIHOOD, max_length=255, default="Farmer"
+    )
+    farmer_activty = models.CharField(
+        choices=FARMER_ACTIVITY, max_length=255, default="Rice",
     )
     date_added = models.DateTimeField(auto_now_add=True)
 
