@@ -246,6 +246,16 @@ class DashboardView(MustBeLoggedIn, View):
         self.context["items"] = FarmProfile.objects.all().order_by("-date_added")[:10]
         return render(request, self.template_name, self.context)
 
+class OverallReport(MustBeLoggedIn, View):
+    template_name = "overall_report.html"
+    def get(self, request):
+        context = {}
+        context["items"] = FarmProfile.objects.all().order_by("-date_added")[:10]
+        context['filter_form'] = FilterOverAllBeneficiary()
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        pass
 
 class ReportView(MustBeLoggedIn, View):
     template_name = "report.html"
@@ -258,8 +268,6 @@ class ReportView(MustBeLoggedIn, View):
 
     def post(self, request):
         form = ExportReportForm(request.POST)
-
-        # 3D7555
 
         if form.is_valid():
             start_date = timezone.make_aware(
@@ -410,9 +418,8 @@ class BeneficiaryView(MustBeLoggedIn, View):
             query = Q()
 
             if filters.get("farmer_activity"):
-                query &= (
-                    Q(activity_farmer__iexact=filters.get("farmer_activity"))
-                    | Q(activity_farmworker__iexact=filters.get("farmer_activity"))
+                query &= Q(activity_farmer__iexact=filters.get("farmer_activity")) | Q(
+                    activity_farmworker__iexact=filters.get("farmer_activity")
                 )
 
             if filters.get("municipality"):
@@ -425,6 +432,7 @@ class BeneficiaryView(MustBeLoggedIn, View):
 
         context["beneficiaries"] = main_query
         return render(request, self.template_name, context)
+
 
 class AddBeneficiaryView(View):
     template_name = "form_beneficiary.html"

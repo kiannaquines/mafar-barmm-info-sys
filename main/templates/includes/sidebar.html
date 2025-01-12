@@ -67,6 +67,18 @@
                         <p>Sent Notification</p>
                     </a>
                 </li>
+                <li class="nav-section {% if 'report' in request.path %}active{% endif %}">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Report Module</h4>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'report' %}" class="collapsed">
+                        <i class="far fa-file"></i>
+                        <p>Export PDF Report</p>
+                    </a>
+                </li>
             </ul>
             {% else %}
             <ul class="nav nav-secondary">
@@ -119,9 +131,9 @@
                     <h4 class="text-section">Report Module</h4>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'report' %}" class="collapsed">
+                    <a href="{% url 'overall_report' %}" class="collapsed">
                         <i class="far fa-file"></i>
-                        <p>Export PDF Report</p>
+                        <p>Generate Report</p>
                     </a>
                 </li>
             </ul>

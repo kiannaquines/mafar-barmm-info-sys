@@ -24,6 +24,7 @@ urlpatterns = [
     path('mafar/approve_and_notify', ApproveAndNotifyView.as_view(), name="approve_and_notify"),
     # Report
     path('mafar/report', ReportView.as_view(), name="report"),
+    path('mafar/overall-report', OverallReport.as_view(), name="overall_report"),
     path('mafar/get_barangay/list', get_barangay, name="get_barangay"),
 
     # Municipality and Barangay

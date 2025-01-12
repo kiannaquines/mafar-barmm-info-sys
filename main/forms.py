@@ -5,6 +5,27 @@ from main.models import *
 
 User = get_user_model()
 
+class FilterOverAllBeneficiary(forms.Form):
+    municipality = forms.ModelChoiceField(
+        empty_label="Select Municipality",
+        queryset=Municpality.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Municipality",
+        required=False,
+    )
+
+    activity = forms.ChoiceField(
+        required=False,
+        choices=Notification.FARMER_ACTIVITY,
+        widget=forms.Select(attrs={'class': 'form-select','placeholder': 'Select activity'}),
+    )
+
+    livelihood = forms.ChoiceField(
+        required=False,
+        choices=FarmProfile.MAIN_LIVELIHOOD,
+        widget=forms.Select(attrs={'class': 'form-select','placeholder': 'Select livelihood'}),
+    )
+
 class FilterBeneficiary(forms.Form):
     municipality = forms.ModelChoiceField(
         empty_label="Select Municipality",
