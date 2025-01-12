@@ -295,7 +295,7 @@ class OverallReport(MustBeLoggedIn, View):
                     message="No data found matching the provided filters",
                     tag="danger",
                 )
-                return redirect(reverse_lazy('overall_report'))
+                return redirect(reverse_lazy("overall_report"))
 
             total_count = 0
 
