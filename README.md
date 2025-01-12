@@ -1,3 +1,16 @@
+## How?
+``
+python manage.py makemigrations
+``
+
+``
+python manage.py migrate
+``
+
+``
+python manage.py runserver
+``
+
 ## Images
 ![image](https://github.com/user-attachments/assets/08879a3a-c30b-4586-9f9e-03b2784eb170)
 
