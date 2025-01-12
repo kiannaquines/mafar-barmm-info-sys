@@ -26,7 +26,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
 import json
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 User = get_user_model()
@@ -246,16 +246,156 @@ class DashboardView(MustBeLoggedIn, View):
         self.context["items"] = FarmProfile.objects.all().order_by("-date_added")[:10]
         return render(request, self.template_name, self.context)
 
+
 class OverallReport(MustBeLoggedIn, View):
     template_name = "overall_report.html"
+
     def get(self, request):
         context = {}
         context["items"] = FarmProfile.objects.all().order_by("-date_added")[:10]
-        context['filter_form'] = FilterOverAllBeneficiary()
+        context["filter_form"] = FilterOverAllBeneficiary()
         return render(request, self.template_name, context)
 
     def post(self, request):
-        pass
+        form = FilterOverAllBeneficiary(request.POST)
+
+        if form.is_valid():
+            municipality = form.cleaned_data["municipality"]
+            activity = form.cleaned_data["activity"]
+            livelihood = form.cleaned_data["livelihood"]
+
+            query = FarmProfile.objects.all()
+
+            if municipality:
+                query = query.filter(related_to__municipality=municipality)
+
+            if activity:
+                query = query.filter(
+                    Q(activity_farmer__iexact=activity)
+                    | Q(activity_farmworker__iexact=activity)
+                )
+
+            if livelihood:
+                query = query.filter(main_livelihood__iexact=livelihood)
+
+            grouped_data = (
+                query.values(
+                    "related_to__municipality__municipality",
+                    "main_livelihood",
+                    "activity_farmer",
+                    "activity_farmworker",
+                )
+                .annotate(total=Count("id"))
+                .order_by("related_to__municipality__municipality")
+            )
+
+            total_count = 0
+
+            data = [
+                [
+                    "Municipality",
+                    "Main Livelihood",
+                    "Farmer Activity",
+                    "Beneficiaries",
+                    "Total",
+                ]
+            ]
+
+            for item in grouped_data:
+                municipality_name = item["related_to__municipality__municipality"]
+                main_livelihood = item["main_livelihood"]
+                activity = item["activity_farmer"] or item["activity_farmworker"]
+                beneficiaries = item["total"]
+                total_count += beneficiaries
+                data.append(
+                    [
+                        municipality_name,
+                        main_livelihood,
+                        activity,
+                        beneficiaries,
+                        "",
+                    ]
+                )
+
+            data.append(
+                [
+                    "",
+                    "",
+                    "",
+                    "Total Beneficiaries",
+                    str(total_count),
+                ]
+            )
+
+            buffer = BytesIO()
+            response = HttpResponse(content_type="application/pdf")
+            response["Content-Disposition"] = 'inline; filename="overall_report.pdf"'
+
+            left_margin = 0.5 * inch
+            right_margin = 0.5 * inch
+            top_margin = 0
+            bottom_margin = 1 * inch
+
+            doc = SimpleDocTemplate(
+                buffer,
+                pagesize=letter,
+                leftMargin=left_margin,
+                rightMargin=right_margin,
+                topMargin=top_margin,
+                bottomMargin=bottom_margin,
+            )
+            doc.title = "Beneficiaries Overall Report"
+
+            elements = []
+
+            styles = getSampleStyleSheet()
+            header_style = styles["Heading2"]
+            header_style.alignment = 1
+
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            header = Paragraph(
+                f"MAFAR BARRM SGA<br/>Overall Beneficiary Report<br/><small>{current_date}</small>",
+                header_style,
+            )
+            elements.append(header)
+            elements.append(Spacer(1, 0.2 * inch))
+
+            green_color = colors.Color(61 / 255, 117 / 255, 85 / 255)
+
+            available_width = doc.width
+            num_columns = len(data[0])
+            column_width = available_width / num_columns
+
+            table = Table(data, colWidths=[column_width] * num_columns)
+            style = TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), green_color),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ]
+            )
+            table.setStyle(style)
+            elements.append(table)
+
+            elements.append(Spacer(1, 0.5 * inch))
+
+            doc.build(elements)
+
+            buffer.seek(0)
+            response.write(buffer.read())
+            return response
+
+        request_message(
+            request=request,
+            message="Invalid form data. Please check your inputs and try again.",
+            tag="danger",
+        )
+        return redirect("overall_report")
+
 
 class ReportView(MustBeLoggedIn, View):
     template_name = "report.html"
