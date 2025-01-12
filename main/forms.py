@@ -5,6 +5,28 @@ from main.models import *
 
 User = get_user_model()
 
+class FilterBeneficiary(forms.Form):
+    municipality = forms.ModelChoiceField(
+        empty_label="Select Municipality",
+        queryset=Municpality.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Municipality",
+        required=False,
+    )
+    barangay = forms.ModelChoiceField(
+        empty_label="Select Barangay",
+        queryset=Barangay.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label="Barangay",
+        required=False,
+    )
+
+    farmer_activity = forms.ChoiceField(
+        required=False,
+        choices=Notification.FARMER_ACTIVITY,
+        widget=forms.Select(attrs={'class': 'form-select','placeholder': 'Select activity'}),
+    )
+
 class ExportReportForm(forms.Form):
     start_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),

@@ -390,12 +390,37 @@ class ReportView(MustBeLoggedIn, View):
             return response
 
 
-class BeneficiaryView(MustBeLoggedIn, ListView):
+class BeneficiaryView(MustBeLoggedIn, View):
     template_name = "beneficiary.html"
-    model = FarmProfile
-    context_object_name = "beneficiaries"
-    queryset = FarmProfile.objects.all()
 
+    def get(self, request):
+        context = {}
+        main_query = FarmProfile.objects.all()
+
+        filter_form = FilterBeneficiary(request.GET)
+        context["filter_form"] = filter_form
+
+        if filter_form.is_valid():
+            filters = request.GET
+
+            query = Q()
+
+            if filters.get("farmer_activity"):
+                query &= (
+                    Q(activity_farmer__iexact=filters.get("farmer_activity"))
+                    | Q(activity_farmworker__iexact=filters.get("farmer_activity"))
+                )
+
+            if filters.get("municipality"):
+                query &= Q(related_to__municipality=filters.get("municipality"))
+
+            if filters.get("barangay"):
+                query &= Q(related_to__barangay=filters.get("barangay"))
+
+            main_query = main_query.filter(query)
+
+        context["beneficiaries"] = main_query
+        return render(request, self.template_name, context)
 
 class AddBeneficiaryView(View):
     template_name = "form_beneficiary.html"
@@ -771,6 +796,7 @@ class UpdateMunicipalityView(UpdateView):
             for error in errors:
                 request_message(request=self.request, message=error, tag="danger")
 
+
 class DeleteBarangayView(MustBeLoggedIn, DeleteView):
     pk_url_kwarg = "pk"
     model = Barangay
@@ -796,6 +822,7 @@ class DeleteBarangayView(MustBeLoggedIn, DeleteView):
         for field, errors in form.errors.items():
             for error in errors:
                 request_message(request=self.request, message=error, tag="danger")
+
 
 class DeleteMunicipalityView(MustBeLoggedIn, DeleteView):
     pk_url_kwarg = "pk"

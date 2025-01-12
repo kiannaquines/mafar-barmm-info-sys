@@ -10,6 +10,22 @@
     </div>
     {% include './includes/message.html' %}
     <div class="card py-3">
+        <form action="" class="mb-2">
+            <div class="row">
+                {% for input in filter_form %}
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{ input }}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="submit" value="Filter" name="filter" class="btn btn-primary btn-sm btn-block w-100">
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table" id="datatable">
                 <thead>
@@ -64,7 +80,6 @@
             </table>
         </div>
     </div>
-    
 </div>
 {% endblock %}
 
@@ -73,6 +88,39 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+    document.getElementById("id_municipality").addEventListener("change", function() {
+        fetch('{% url "get_barangay" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                municipality_id: this.value
+            })
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        }).then((data) => {
+            const barangaySelect = document.getElementById('id_barangay');
+            barangaySelect.innerHTML = '';
+
+            const option = new Option('Select Option','');
+            barangaySelect.add(option);
+
+            data.barangay.forEach(barangay => {
+                const option = new Option(barangay.name, barangay.id);
+                barangaySelect.add(option);
+            });
+
+        }).catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+    
     $(document).ready(function(){
         $(document).on('click', '#approve-and-notify', function(event){
             event.preventDefault();
