@@ -289,6 +289,14 @@ class OverallReport(MustBeLoggedIn, View):
                 .order_by("related_to__municipality__municipality")
             )
 
+            if grouped_data.count() == 0:
+                request_message(
+                    request=request,
+                    message="No data found matching the provided filters",
+                    tag="danger",
+                )
+                return redirect(reverse_lazy('overall_report'))
+
             total_count = 0
 
             data = [
