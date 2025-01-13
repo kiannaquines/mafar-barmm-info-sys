@@ -401,7 +401,7 @@ class OverallReport(View):
 
             current_date = datetime.now().strftime("%Y-%m-%d")
             header = Paragraph(
-                f"MAFAR BARRM SGA<br/>Overall Beneficiary Report<br/><small>{current_date}</small>",
+                f"MAFAR BARRM SGA<br/>Overall Beneficiary Report<br/><small>As of {current_date}</small>",
                 header_style,
             )
             elements.append(header)
@@ -427,9 +427,20 @@ class OverallReport(View):
             )
             table.setStyle(style)
             elements.append(table)
-
             elements.append(Spacer(1, 0.5 * inch))
-
+            prepared_by_style = ParagraphStyle(
+                name="PreparedByStyle",
+                fontName="Helvetica-Bold",
+                fontSize=10,
+                textTransform="uppercase",
+                spaceBefore=0,
+                spaceAfter=0,
+                leftIndent=0,
+                rightIndent=0,
+            )
+            elements.append(
+                Paragraph(f"Prepared by: {request.user}", style=prepared_by_style)
+            )
             doc.build(elements)
 
             buffer.seek(0)
@@ -527,9 +538,9 @@ class ReportView(MustBeLoggedIn, View):
                 topMargin=top_margin,
                 bottomMargin=bottom_margin,
             )
+
             doc.build(elements, onFirstPage=add_logo)
             doc.title = "Beneficiaries Report"
-
 
             styles = getSampleStyleSheet()
             header_style = styles["Heading2"]
@@ -537,7 +548,7 @@ class ReportView(MustBeLoggedIn, View):
 
             current_date = datetime.now().strftime("%Y-%m-%d")
             header = Paragraph(
-                f"MAFAR BARRM SGA<br/>{header_first}<br/>{header_secondary}<br/><small>{current_date}</small>",
+                f"MAFAR BARRM SGA<br/>{header_first}<br/>{header_secondary}<br/><small>As of {current_date}</small>",
                 header_style,
             )
             elements.append(header)
@@ -583,6 +594,21 @@ class ReportView(MustBeLoggedIn, View):
             table.setStyle(style)
             elements.append(table)
             elements.append(Spacer(1, 0.5 * inch))
+
+            prepared_by_style = ParagraphStyle(
+                name="PreparedByStyle",
+                fontName="Helvetica-Bold",
+                fontSize=10,
+                textTransform="uppercase",
+                spaceBefore=0,
+                spaceAfter=0,
+                leftIndent=0,
+                rightIndent=0,
+            )
+            elements.append(
+                Paragraph(f"Prepared by: {request.user}", style=prepared_by_style)
+            )
+
             doc.build(elements)
 
             buffer.seek(0)
