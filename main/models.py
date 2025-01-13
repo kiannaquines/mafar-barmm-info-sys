@@ -247,6 +247,7 @@ class FarmProfile(models.Model):
             ("Disapproved", "Disapproved"),
         ),
     )
+    reason = models.TextField(max_length=255, blank=True, null=True, help_text="Reason why disapproved")
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

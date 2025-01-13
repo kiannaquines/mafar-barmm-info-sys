@@ -63,6 +63,30 @@
 <script>
     const get_barangay = document.getElementById("id_municipality")
 
+    const id_status = document.getElementById("id_status"); 
+    const elemToHide = document.querySelector("textarea[name='reason']");
+    const label = document.querySelector("label[for='id_reason']");
+    const small = document.querySelector(".form-group.id_reason small");
+
+    if (id_status.value == "Approved") {
+        elemToHide.style.display = "none";
+        if (label) label.style.display = "none";
+        if (small) small.style.display = "none";
+    }
+
+    id_status.addEventListener("change", function(e) {
+        e.preventDefault();
+        if (e.target.value === "Approved") {
+            elemToHide.style.display = "none";
+            if (label) label.style.display = "none";
+            if (small) small.style.display = "none";
+        } else {
+            elemToHide.style.display = "block";
+            if (label) label.style.display = "block";
+            if (small) small.style.display = "block";
+        }
+    });
+
     if (get_barangay) {
         get_barangay.addEventListener("change", function() {
             fetch('{% url "get_barangay" %}', {
@@ -144,7 +168,5 @@
         toggleElements(event.target.value);
     });
 };
-
 </script>
-
 {% endblock %}
