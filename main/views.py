@@ -10,7 +10,7 @@ from django.views.generic import (
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import get_object_or_404, redirect, render
 from main.mixins import MustBeLoggedIn, AlreadyLoggedInMixin
-from core.settings import SERVER_SMS_MESSAGE_TEMPLATE
+from core.settings import BARRM_LOGO_PATH, MFAR_LOGO_PATH, SERVER_SMS_MESSAGE_TEMPLATE
 from main.utils import request_message
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
@@ -21,12 +21,23 @@ from datetime import datetime, time
 from django.shortcuts import redirect, render
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Table,
+    TableStyle,
+    Paragraph,
+    Spacer,
+    Image,
+)
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
 import json
 from django.db.models import Q, Count
+from reportlab.pdfgen import canvas
+from django.templatetags.static import static
+from django.conf import settings
+import os
 
 
 User = get_user_model()
@@ -247,7 +258,36 @@ class DashboardView(MustBeLoggedIn, View):
         return render(request, self.template_name, self.context)
 
 
-class OverallReport(MustBeLoggedIn, View):
+def add_logo(canvas, doc):
+    logo_width = 0.7 * inch
+    logo_height = 0.7 * inch
+
+    left_x = doc.leftMargin
+    left_y = doc.pagesize[1] - 1.3 * inch
+    canvas.drawImage(
+        BARRM_LOGO_PATH,
+        x=left_x,
+        y=left_y,
+        width=logo_width,
+        height=logo_height,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
+
+    right_x = doc.pagesize[0] - doc.rightMargin - logo_width
+    right_y = doc.pagesize[1] - 1.3 * inch
+    canvas.drawImage(
+        MFAR_LOGO_PATH,
+        x=right_x,
+        y=right_y,
+        width=logo_width,
+        height=logo_height,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
+
+
+class OverallReport(View):
     template_name = "overall_report.html"
 
     def get(self, request):
@@ -341,9 +381,9 @@ class OverallReport(MustBeLoggedIn, View):
 
             left_margin = 0.5 * inch
             right_margin = 0.5 * inch
-            top_margin = 0
+            top_margin = 0.5 * inch
             bottom_margin = 1 * inch
-
+            elements = []
             doc = SimpleDocTemplate(
                 buffer,
                 pagesize=letter,
@@ -352,9 +392,8 @@ class OverallReport(MustBeLoggedIn, View):
                 topMargin=top_margin,
                 bottomMargin=bottom_margin,
             )
+            doc.build(elements, onFirstPage=add_logo)
             doc.title = "Beneficiaries Overall Report"
-
-            elements = []
 
             styles = getSampleStyleSheet()
             header_style = styles["Heading2"]
@@ -476,8 +515,9 @@ class ReportView(MustBeLoggedIn, View):
 
             left_margin = 0.5 * inch
             right_margin = 0.5 * inch
-            top_margin = 0
+            top_margin = 0.5 * inch
             bottom_margin = 1 * inch
+            elements = []
 
             doc = SimpleDocTemplate(
                 buffer,
@@ -487,9 +527,9 @@ class ReportView(MustBeLoggedIn, View):
                 topMargin=top_margin,
                 bottomMargin=bottom_margin,
             )
+            doc.build(elements, onFirstPage=add_logo)
             doc.title = "Beneficiaries Report"
 
-            elements = []
 
             styles = getSampleStyleSheet()
             header_style = styles["Heading2"]
@@ -501,16 +541,16 @@ class ReportView(MustBeLoggedIn, View):
                 header_style,
             )
             elements.append(header)
-            elements.append(Spacer(1, 0.2 * inch))
+            elements.append(Spacer(1, 0.4 * inch))
             data = [
                 [
                     "Beneficiary",
+                    "Mobile Number",
                     "Gender",
                     "Status",
                     "Municipality",
                     "Barangay",
                     "Main Livelihood",
-                    "Date Added",
                 ]
             ]
             for item in query:
@@ -518,11 +558,11 @@ class ReportView(MustBeLoggedIn, View):
                     [
                         str(item.related_to.get_full_name()),
                         item.related_to.gender,
+                        item.related_to.mobile_number,
                         item.status,
                         item.related_to.municipality,
                         item.related_to.barangay,
                         item.main_livelihood,
-                        item.date_added,
                     ]
                 )
 

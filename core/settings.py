@@ -104,3 +104,8 @@ Sukran
 Best Regards,
 MAFAR BARMM SGA
 """
+
+
+BARRM_LOGO_PATH = os.path.join(BASE_DIR, "static\\assets\\img\\barrm.png")
+MFAR_LOGO_PATH = os.path.join(BASE_DIR, "static\\assets\\img\\logo.jpg")
+
