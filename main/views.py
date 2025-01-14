@@ -304,7 +304,7 @@ class OverallReport(View):
             activity = form.cleaned_data["activity"]
             livelihood = form.cleaned_data["livelihood"]
 
-            query = FarmProfile.objects.all()
+            query = FarmProfile.objects.all().filter(status="Approved")
 
             if municipality:
                 query = query.filter(related_to__municipality=municipality)
@@ -482,12 +482,12 @@ class ReportView(MustBeLoggedIn, View):
             if farmer_type == "All":
                 query = FarmProfile.objects.filter(
                     date_added__range=(start_date, end_date),
-                ).order_by("-date_added")
+                ).order_by("-date_added").filter(status="Approved")
             else:
                 query = FarmProfile.objects.filter(
                     date_added__range=(start_date, end_date),
                     main_livelihood=farmer_type,
-                ).order_by("-date_added")
+                ).order_by("-date_added").filter(status="Approved")
 
             if municipality:
                 header_first = municipality
