@@ -439,7 +439,7 @@ class OverallReport(View):
                 rightIndent=0,
             )
             elements.append(
-                Paragraph(f"Prepared by: {request.user}", style=prepared_by_style)
+                Paragraph(f"Prepared by: {request.user.get_full_name()}", style=prepared_by_style)
             )
             doc.build(elements)
 
@@ -606,7 +606,7 @@ class ReportView(MustBeLoggedIn, View):
                 rightIndent=0,
             )
             elements.append(
-                Paragraph(f"Prepared by: {request.user}", style=prepared_by_style)
+                Paragraph(f"Prepared by: {request.user.get_full_name()}", style=prepared_by_style)
             )
 
             doc.build(elements)
