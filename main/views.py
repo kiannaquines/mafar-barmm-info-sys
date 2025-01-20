@@ -87,20 +87,25 @@ class NotificationView(MustBeLoggedIn, View):
     def post(self, request):
         notification = Notification.objects.filter(id=request.POST.get("id")).first()
         beneficiaries_within_place = FarmProfile.objects.filter(
-            Q(activity_farmer__iexact=request.POST.get("activity"))
-            | Q(activity_farmworker__iexact=request.POST.get("activity")),
+            Q(activity_farmer=request.POST.get("activity"))
+            | Q(activity_farmworker=request.POST.get("activity")),
             related_to__municipality=notification.for_municipality,
             main_livelihood=request.POST.get("type"),
         )
 
-        message = notification.message
-        mobile = [
-            beneficiary.related_to.mobile_number
-            for beneficiary in beneficiaries_within_place
-        ]
-
-        sms_notification = send_sms_api_interface(message, mobile)
-        return JsonResponse(sms_notification)
+        if beneficiaries_within_place.count() > 0:
+            message = notification.message
+            mobile = [
+                beneficiary.related_to.mobile_number
+                for beneficiary in beneficiaries_within_place
+            ]
+            sms_notification = send_sms_api_interface(message, mobile)
+            return JsonResponse(sms_notification)
+        
+        return JsonResponse(data={
+            'message': 'No beneficiary found with your notification filter',
+            'status': 'no_data_found'
+        })
 
 
 class AddNotificationView(CreateView):
@@ -190,7 +195,6 @@ class DeleteNotificationInfoView(MustBeLoggedIn, DeleteView):
 class ApproveAndNotifyView(View):
     def post(self, request):
         beneficiary_id = request.POST.get("id")
-
         beneficiary = get_object_or_404(FarmProfile, id=beneficiary_id)
         beneficiary.status = "Approved"
         beneficiary.save()
@@ -201,6 +205,8 @@ class ApproveAndNotifyView(View):
         mobile = [beneficiary.related_to.mobile_number]
 
         sms_notification = send_sms_api_interface(message, mobile)
+
+        print(sms_notification)
         return JsonResponse(sms_notification)
 
 
