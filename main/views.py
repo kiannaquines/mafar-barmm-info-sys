@@ -205,9 +205,6 @@ class ApproveAndNotifyView(View):
             client_fullname=beneficiary.related_to.get_full_name(),
             status=beneficiary.status
         )
-
-        print(message)
-
         sms_notification = send_sms_api_interface(message, mobile)
         return JsonResponse(sms_notification)
 
