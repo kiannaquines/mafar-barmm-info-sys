@@ -199,14 +199,16 @@ class ApproveAndNotifyView(View):
         beneficiary.status = "Approved"
         beneficiary.save()
 
-        message = SERVER_SMS_MESSAGE_TEMPLATE.format(
-            client_fullname=beneficiary.related_to.get_full_name()
-        )
         mobile = [beneficiary.related_to.mobile_number]
 
-        sms_notification = send_sms_api_interface(message, mobile)
+        message = SERVER_SMS_MESSAGE_TEMPLATE.format(
+            client_fullname=beneficiary.related_to.get_full_name(),
+            status=beneficiary.status
+        )
 
-        print(sms_notification)
+        print(message)
+
+        sms_notification = send_sms_api_interface(message, mobile)
         return JsonResponse(sms_notification)
 
 
