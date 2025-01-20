@@ -100,10 +100,7 @@ class NotificationView(MustBeLoggedIn, View):
                 for beneficiary in beneficiaries_within_place
             ]
 
-            sms_notification = send_sms_api_interface(message, mobile)
-
-            print(sms_notification)
-            
+            sms_notification = send_sms_api_interface(message, mobile)            
             return JsonResponse(sms_notification)
         
         return JsonResponse(data={
