@@ -68,7 +68,7 @@ class PersonalInformation(models.Model):
         max_length=255, help_text="Beneficiary first name", db_index=True
     )
     middlename = models.CharField(
-        max_length=255, help_text="Beneficiary middle name", db_index=True
+        max_length=255, help_text="Beneficiary middle name", db_index=True, blank=True, null=True,
     )
     lastname = models.CharField(
         max_length=255, help_text="Beneficiary last name", db_index=True
@@ -94,7 +94,7 @@ class PersonalInformation(models.Model):
     province = models.CharField(max_length=255, help_text="Province")
     region = models.CharField(max_length=255, help_text="Region")
 
-    mobile_number = models.CharField(max_length=11, help_text="Mobile Number")
+    mobile_number = models.CharField(max_length=11, help_text="Mobile Number",unique=True)
     landline_number = models.CharField(
         max_length=255, help_text="Landline Number", blank=True, null=True
     )

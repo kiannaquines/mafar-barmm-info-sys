@@ -99,7 +99,11 @@ class NotificationView(MustBeLoggedIn, View):
                 beneficiary.related_to.mobile_number
                 for beneficiary in beneficiaries_within_place
             ]
+
             sms_notification = send_sms_api_interface(message, mobile)
+
+            print(sms_notification)
+            
             return JsonResponse(sms_notification)
         
         return JsonResponse(data={

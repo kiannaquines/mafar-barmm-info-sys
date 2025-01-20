@@ -101,7 +101,7 @@
                                     window.location.reload()
                                 }, 3000)
                                 
-                            } else if (response.status == 'error' || response.status == 'no_data_found') {
+                            } else if (response.status == 'error' || response.status == 'danger' || response.status == 'no_data_found') {
                                 Swal.fire(
                                     'Failed!',
                                     `${response.message}`,
