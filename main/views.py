@@ -27,17 +27,13 @@ from reportlab.platypus import (
     TableStyle,
     Paragraph,
     Spacer,
-    Image,
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
 import json
 from django.db.models import Q, Count
-from reportlab.pdfgen import canvas
 from django.templatetags.static import static
-from django.conf import settings
-import os
 
 
 User = get_user_model()
