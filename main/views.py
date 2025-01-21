@@ -33,7 +33,6 @@ from reportlab.lib.units import inch
 from io import BytesIO
 import json
 from django.db.models import Q, Count
-from django.templatetags.static import static
 
 
 User = get_user_model()
