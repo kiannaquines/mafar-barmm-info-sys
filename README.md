@@ -11,7 +11,7 @@ python manage.py migrate
 python manage.py runserver
 ``
 
-## Images
+## Software Images
 ![image](https://github.com/user-attachments/assets/08879a3a-c30b-4586-9f9e-03b2784eb170)
 
 ![12Capture](https://github.com/user-attachments/assets/2a0bb32a-ee2e-4324-ac70-fc47bacc0559)
